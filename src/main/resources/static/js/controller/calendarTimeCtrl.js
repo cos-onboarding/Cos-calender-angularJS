@@ -128,7 +128,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }else{ //员工
             modalsss.updateMss($scope.userId);
         }
-        $scope.jurisdiction();
+        window.location.reload();
     };
 
     // // 筛选是否包含该对象
@@ -232,7 +232,10 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             height: 450,
             editable: false,
             stick: true,
-
+            fixedWeekCount: false,
+            businessHours: {
+                dow: [ 1, 2, 3, 4, 5 ], // 周一 - 周四
+            },
             header:{
                 left: 'prevYear, nextYear, title, ',
                 center: '',
