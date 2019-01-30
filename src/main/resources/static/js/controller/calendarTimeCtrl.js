@@ -36,11 +36,11 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             if($rootScope.rid == 2){ // 领导
                 managerLoads($scope.branchId);
             }else if ($rootScope.rid == 3){ // 总行
-                headOfficeView.($scope.branchId);
+                 // headOfficeView($scope.branchId);
             }else{ //员工
                 staffLoads(param);
             }
-            // console.log("sssss:"+new Date("1546412692000"));
+
         }).catch(function (result) { //捕捉错误处理
         });
     }
