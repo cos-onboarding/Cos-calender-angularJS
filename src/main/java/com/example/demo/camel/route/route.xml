@@ -1,0 +1,8 @@
+<rests xmlns="http://camel.apache.org/schema/spring">
+   <rest id="login">
+      <post uri="/api/login">
+      <process ref="loginProcessor"/>
+         <to uri="http://localhost:8081/api/login?bridgeEndpoint=true"/>
+      </post>
+   </rest>
+ </rests>

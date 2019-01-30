@@ -1,0 +1,36 @@
+
+    <div class="container">
+        <h1 class="form-heading">Registry Form</h1>
+        <div class="registry-form">
+            <div class="main-div">
+                <div class="panel">
+                    <h2>User Registry</h2>
+                    <p>Please enter your username and password</p>
+                </div>
+                <form id="Registry">
+                    <div class="form-group">
+
+                        <input type="text" class="form-control" id="inputUsername" placeholder="Username" ng-model="username" ng-blur="usernameCheck()">
+                        <p class="text-warning" ng-if="!isUsernamePass">Please input a valid username</p>
+                        <p class="text-warning" ng-show="isUsernameBlank">Username cannot be empty!</p>
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="password">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" ng-model="confirmPassword">
+                        <p class="text-warning" ng-hide="isPasswordConfirmed">Password must be identical!</p>
+
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" ng-click="newUser()" ng-disabled="isButtonDisabled">Registry Now</button>
+                    
+                </form>
+            </div>
+        </div>
+    </div>

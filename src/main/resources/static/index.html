@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link type="text/css" rel="styleSheet" href="styles/index.css" />
+    <link type="text/css" rel="styleSheet" href="styles/bootstrap-css/css/bootstrap.css" />
+    <link rel="stylesheet" href="js/components/fullcalendar/dist/fullcalendar.css">
+    <link href="js/components/other-dependent/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link type="text/css" rel="styleSheet" href="js/components/dist/angular-moment-picker.css" />
+    <link type="text/css" rel="styleSheet" href="js/components/dist/angular-moment-picker.min.css" />
+    <script src="js/components/other-dependent/jquery.min.js"></script>
+    <script src="js/components/other-dependent/bootstrap.min.js"></script>
+    <script type="text/javascript" src="webjars/angularjs/1.7.5/angular.min.js"></script>
+    <script type="text/javascript" src="js/components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script type="text/javascript" src="js/components/ui-calendar-master/moment.min.js"></script>
+    <script type="text/javascript" src="js/components/other-dependent/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="js/components/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="js/components/fullcalendar/dist/locale/zh-cn.js"></script>  
+    <script type="text/javascript" src="js/components/fullcalendar/dist/gcal.js"></script>  
+    <script type="text/javascript" src="js/components/ui-calendar-master/src/calendar.js"></script>
+    <script type="text/javascript" src="js/components/dist/angular-moment-picker.js"></script>
+    <script type="text/javascript" src="js/components/dist/angular-moment-picker.min.js"></script>
+
+
+    <script type="text/javascript" src="js/controller/mainCtrl.js"></script>
+    <script type="text/javascript" src="js/controller/loginCtrl.js"></script>
+    <script type="text/javascript" src="js/controller/registryCtrl.js"></script>
+    <script type="text/javascript" src="js/controller/overviewCtrl.js"></script>     
+    <script type="text/javascript" src="js/controller/calendarCtrl.js"></script>
+    <script type="text/javascript" src="js/controller/calendarTimeCtrl.js"></script>
+    <script type="text/javascript" src="js/controller/branchCtrl.js"></script>
+    <script type="text/javascript" src="js/server/selectServer.js"></script>
+    <script type="text/javascript" src="js/controller/modalCtrl.js"></script>
+    <script type="text/javascript" src="js/controller/managerCtrl.js"></script>
+</head>
+
+<body ng-app="myApp">
+    <div ng-controller="mainCtrl">
+        <div ng-if="isLandingPage">
+        <a class="btn btn-primary" ui-sref="login">Login</a>
+        <a class="btn btn-primary" ui-sref="registry">Registry</a>
+        <a class="btn btn-primary" ui-sref="calendar">Calendar</a>
+        <a class="btn btn-primary" ui-sref="calendarTime">Calendar Demo</a>
+        </div>
+    </div>
+    <div ui-view>
+    </div>
+
+</body>

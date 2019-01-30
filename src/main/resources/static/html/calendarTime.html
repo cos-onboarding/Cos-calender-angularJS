@@ -1,0 +1,46 @@
+<div role="main">
+    <div class="container">
+        <section id="directives-calendar" ng-controller="calendarTimeCtrl">
+            <div class="page-header">
+                <h1>UI-Calendar</h1>
+            </div>
+            <div class="well">
+                <div class="row-fluid">
+                    <div class="span8">
+                        <tabset>
+                            <tab select="renderCalendar('myCalendar1');">
+                                <tab-heading>
+                                    <i class="glyphicon glyphicon-bell"></i> Calendar One
+                                </tab-heading>
+                                <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
+                                    <h4>{{alertMessage}}</h4>
+                                </div>
+                                <div class="btn-toolbar">
+                                    <p class="pull-right lead">Calendar One View Options</p>
+                                </div>
+                                <div id="content" class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<div ng-include="'html/template/staffTemplate.html'"></div>
+<div ng-include="'html/template/managerTemplate.html'"></div>
+<div ng-include="'html/template/branchTemplate.html'"></div>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-17352735-3']);
+    _gaq.push(['_trackPageview']);
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') +
+            '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+</script>

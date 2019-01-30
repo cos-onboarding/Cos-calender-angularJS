@@ -1,0 +1,34 @@
+
+    <div class="container">
+        <h1 class="form-heading">login Form</h1>
+        <div class="login-form">
+            <div class="main-div">
+                <div class="panel">
+                    <h2>User Login</h2>
+                    <p>Please enter your username and password</p>
+                </div>
+                <form id="Login">
+
+                    <div class="form-group">
+
+
+                        <input type="text" class="form-control" id="inputUsername" placeholder="Username" ng-model="username">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <input type="password" class="form-control" id="inputPassword" placeholder="Password" ng-model="password">
+                        <p class="text-warning" ng-show="isLoggedin">Invalid username or password!</p>
+                        <p class="text-warning" ng-hide="isOneblank">Username and password cannot be empty!</p>
+
+                    </div>
+                    <div class="forgot">
+                        <a href="reset.html">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary" ng-click="userLogin()">Login</button>
+                    <button type="submit" class="btn btn-primary" ng-click="calenderLogin()">Calender Login</button>
+                </form>
+            </div>
+        </div>
+    </div>

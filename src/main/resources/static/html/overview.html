@@ -1,0 +1,34 @@
+
+    <div class="container">
+        <h1 class="form-heading">login Form</h1>
+        <div class="overview-form">
+            <div class="main-div">
+                <div class="panel">
+                    <h2>Application Overview</h2>
+                </div>
+                <div class="panel">
+                    <p class="btn btn-link">Apply for a new application</p>
+                </div>
+                <form id="overview">
+
+                    <div class="form-group">
+                        <table class="table table-hover" ng-init="applications()">
+                            <thead>
+                                <tr><th>Application</th><th>Company</th><th>Status</th><th>Date</th><th>Operation</th></tr>
+                            </thead>
+                            <tr ng-repeat="x in records">
+                                <td>{{x.APPLICATION}}</td>
+                                <td>{{x.COMPANY}}</td>
+                                <td>{{x.STATUS}}</td>
+                                <td>{{x.CREATE_DATE}}</td> 
+                                <td><p class="btn btn-link">edit</p></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" ng-click="userLogin()">Login</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
