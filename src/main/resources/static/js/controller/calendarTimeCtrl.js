@@ -1,4 +1,4 @@
-app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate) {
+app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate,chServer) {
     $rootScope.isLandingPage = false;
     $scope.selectIds=[];
     $rootScope.sites = [
@@ -141,10 +141,27 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }
         window.location.reload();
     };
+    // 拖拽功能
+    $scope.endDragStip = function (event, delta, revertFunc, jsEvent, ui, view) {
+        console.log(event)
+        console.log(delta._days)
+        var timeStamp = chServer.dateTimeChuo(event.info_id,delta._days);
+        var allToDay = chServer.dateAddDays(event.start,delta._days);
+        console.log(timeStamp);
+        console.log(allToDay);
+
+        var param = {id:event.id,timeStamp:timeStamp,timeDay:allToDay};
+        $http.post("/camel/api/dragAndDrop",param,{
+        }).then(function (result) {  //正确请求成功时处理
+        }).catch(function (result) { //捕捉错误处理
+        });
+    }
+
 
     $scope.branchScheduleInfo = function (indexsst) {
         branchTemplate.getBranchScheduleInfo(indexsst,$rootScope._date);
     };
+
     // // 筛选是否包含该对象
     // function findElem(arrayToSearch,val){
     //     for (var i=0;i<arrayToSearch.length;i++){
@@ -247,6 +264,10 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             editable: false,
             stick: true,
             fixedWeekCount: false,
+            displayEventTime: false,
+            slotEventOverlap: true,
+            eventStartEditable:true,
+            //
             businessHours: {
                 dow: [ 1, 2, 3, 4, 5 ], // 周一 - 周四
             },
@@ -260,6 +281,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             eventRender: $scope.eventRenders,
             dayClick: $scope.eventOne,
             loading:$scope.jurisdiction,
+            eventDrop:$scope.endDragStip //拖拽功能
             // eventMouseover:$scope.eventMou
             /* Mouseover*/
             /*eventMouseover: $scope.eventMouseover*/

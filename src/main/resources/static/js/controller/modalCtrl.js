@@ -50,14 +50,16 @@ app.service('modalsss',function ($rootScope,$http,chServer) {
                 var c = chServer.timeStampDay(dateTime);
                 var a = chServer.timeStampDay(endTime);
                 $rootScope.schedule[i].dateTime = d+c;
+                console.log("开始："+$rootScope.schedule[i].dateTime)
                 $rootScope.schedule[i].endTime = d+a;
+                console.log("结束："+$rootScope.schedule[i].endTime)
             }
             var param = {
                 time:$rootScope.timeStamp,
                 scheduleDel:$rootScope.scheduleDel,
                 schedule:$rootScope.schedule
             }
-            console.log(JSON.stringify(param))
+            console.log("sadasd:" + JSON.stringify(param))
             $http.post("/camel/api/saveCalendarSchdule",param ,{
             }).then(function (result) {  //正确请求成功时处理
 

@@ -17,6 +17,17 @@
                                 </div>
                                 <div class="btn-toolbar">
                                     <p class="pull-right lead">Calendar One View Options</p>
+                                    <div class="btn-group">
+                                        <span style="width:50px; height:30px;background-color:yellow;font-size: 15px !important;text-align: center;">
+                                            未完成
+                                        </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span style="width:50px; height:30px;background-color:green;font-size: 15px;text-align: center;">
+                                            已完成
+                                        </span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <span style="width:50px; height:30px;background-color:red;font-size: 15px;text-align: center;">
+                                            失败
+                                        </span>
+                                    </div>
                                 </div>
                                 <div id="content" class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
                             </tab>
