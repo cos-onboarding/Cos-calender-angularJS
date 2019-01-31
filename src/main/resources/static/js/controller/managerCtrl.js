@@ -66,32 +66,6 @@ app.service('manager',function ($rootScope,$http,chServer) {
             });
             $rootScope.scheduleDel = [];
             $('#managerModal').modal('hide');
-        },SaveSchedul:function () {
-            for (var i =0;i<$rootScope.schedule.length;i++){
-                var dateTime = $rootScope.schedule[i].dateTime;
-                var endTime = $rootScope.schedule[i].endTime;
-                var times = $rootScope.schedule[i].infoId;
-                var d = chServer.dateStampDay(times);
-                var c = chServer.timeStampDay(dateTime);
-                var a = chServer.timeStampDay(endTime);
-                $rootScope.schedule[i].dateTime = d+c;
-                $rootScope.schedule[i].endTime = d+a;
-                console.log(times);
-            }
-            var param = {
-                time:$rootScope.timeStamp,
-                scheduleDel:$rootScope.scheduleDel,
-                schedule:$rootScope.schedule
-            }
-            console.log(JSON.stringify(param))
-            $http.post("/camel/api/saveCalendarSchdule",param ,{
-            }).then(function (result) {  //正确请求成功时处理
-
-            }).catch(function (result) { //捕捉错误处理
-                console.info(result);
-            });
-            $rootScope.scheduleDel = [];
-            $('#managerModal').modal('hide');
         },
         // 关闭窗口
         mCloseSchedul:function () {
