@@ -1,5 +1,6 @@
 app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate) {
     $rootScope.isLandingPage = false;
+    $scope.selectIds=[];
     $rootScope.sites = [
         {site : "完成", val : 0},
         {site : "未完成", val : 1},
@@ -102,7 +103,6 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }else if ($rootScope.rid == 3){ // 总行
             branchTemplate.branchEventOne(date, allDay, jsEvent, view,$scope.branchId);
 
-            // branchTemplate.getBranch();
         }else{ //员工
             modalsss.eventOnes(date, allDay, jsEvent, view,$scope.userId,$scope.branchId);
         }
@@ -135,7 +135,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         if($rootScope.rid == 2){ // 领导
             manager.mSaveSchedul();
         }else if ($rootScope.rid == 3){ // 总行
-
+            branchTemplate.saveBranchTaskInfo();
         }else{ //员工
             modalsss.updateMss($scope.userId);
         }

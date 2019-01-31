@@ -5,7 +5,7 @@
                 <h4 class="modal-title" id="myModalLabel">
                     分行日程
                 </h4>
-                <button type="button" class="close" ng-click="closeTemplate()">
+                <button type="button" class="close" ng-click="closeTemplate()" style="width: auto">
                     &times;
                 </button>
                 <button class="btn btn-primary" ng-click="addSchedule()">分配日程</button>
@@ -24,35 +24,42 @@
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
-                        <td><input type="text" ng-model="e.name"/></td>
-                        <td><input type="text" ng-model="e.level"/></td>
+                        <td><input type="text" ng-model="e.NAME"/></td>
+                        <td><input type="text" ng-model="e.LEVEL"/></td>
                         <td><input type="text" ng-model="e.finish"/></td>
                         <td><input type="text" ng-model="e.unfinished"/></td>
                         <td><input type="text" ng-model="e.fail"/></td>
                         <td><input type="text" ng-model="e.total"/></td>
-                        <td><button type="button" class="btn btn-primary" ng-click="branchScheduleInfo($index)">↓</button></td>
-                    <table style="width: 80%" ng-show="show">
+                        <td><button type="button" class="btn btn-primary" ng-click="branchScheduleInfo($index)">▼</button></td>
+                        <td><input type="text" ng-model="e.id" style="display: none" /></td>
+
+                    <table style="width: 80%" ng-show="isShow">
                         <tr>
+                            <td><input type="checkbox" ng-model="all"></td>
                             <td>人员名称</td>
                             <td>标题</td>
                             <td>内容</td>
                             <td>开始时间</td>
                             <td>结束时间</td>
                             <td>状态</td>
-                            <td>操作</td>
+                            <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">╳</button></td>
                         </tr>
                     <tr ng-repeat="x in branchStaffList" >
-                        <td>{{$indexSt + 1}}</td>
-                        <td><input type="text" ng-model="x.userName"/></td>
-                        <td><input type="text" ng-model="x.title"/></td>
-                        <td><input type="text" ng-model="x.body"/></td>
-                        <td><input type="text" ng-model="x.startTime"/></td>
-                        <td><input type="text" ng-model="x.endTime"/></td>
-                        <td><input type="text" ng-model="x.type"/></td>
-                        <td><button type="button" class="btn btn-primary" ng-click="delBranchStaff($indexSt)">↓</button></td>
-                    </tr>
-                    </table>
-                    </tr>
+                    <td><input type="checkbox" ng-checked="all"></td>
+                    <td><input type="text" ng-model="x.userName"/></td>
+                    <td><input type="text" ng-model="x.title"/></td>
+                    <td><input type="text" ng-model="x.body"/></td>
+                    <td><input type="text" ng-model="x.startTime"/></td>
+                    <td><input type="text" ng-model="x.endTime"/></td>
+                    <td>
+                        <input type="text" ng-if="x.TYPE==0" value="complete"/>
+                        <input type="text" ng-if="x.TYPE==1" value="failed"/>
+                        <input type="text" ng-if="x.TYPE==2" value="uncomplete"/>
+                    </td>
+                    <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">╳</button></td>
+                </tr>
+                </table>
+                 </tr>
                 </table>
             </div>
             <div class="modal-footer">

@@ -1,6 +1,8 @@
 app.service('branchTemplate',function ($rootScope,$http) {
     $rootScope.branchList = [];
     $rootScope.branchStaffList = [];
+    $rootScope.isShow = false;
+
     return {
         //获取分行及经理名称
         getBranch: function () {
@@ -78,21 +80,20 @@ app.service('branchTemplate',function ($rootScope,$http) {
         },
         deleteTemplateRowInfo: function (indexs) {
             console.log()
-            if ($rootScope.schedule[indexs].id != 0) {
-                $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
+            if ($rootScope.branchStaffList[indexs].id != 0) {
+                $rootScope.scheduleDel.push($rootScope.branchStaffList[indexs]);
             }
-            $rootScope.schedule.splice(indexs, 1);
+            $rootScope.branchStaffList.splice(indexs, 1);
         },
         getBranchScheduleInfo: function (indexs, date) {
-
-            var params = {name: $rootScope.schedule[indexs].name, time: date._i};
+            var params = {id: $rootScope.schedule[indexs].id, time: date};
             $http.post("/camel/api/dayBranchStaffInfo", params, {}).then(function (result){
                 $rootScope.branchStaffList = result.data;
-                console.log(JSON.stringify($rootScope.schedule));
+                console.log(JSON.stringify($rootScope.branchStaffList));
+                $rootScope.isShow = !$rootScope.isShow;
             }).catch(function (result) { //捕捉错误处理
                 console.info(result);
             });
-            $('#branchModalLabel').modal('show');
         }
     }
 });
