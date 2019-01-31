@@ -95,7 +95,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
     // 点击日期
     $scope.eventOne = function (date, allDay, jsEvent, view) {
-        this._date = date._i;
+        $rootScope._date = date._i;
         if($rootScope.rid == 2){ // 领导
             manager.allEventOnes(date, allDay, jsEvent, view,$scope.branchId);
             manager.getStaff(); // 查询员工
@@ -142,8 +142,8 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         window.location.reload();
     };
 
-    $scope.branchScheduleInfo = function (indexsst,this._date) {
-        branchTemplate.getBranchScheduleInfo(indexsst,this._date);
+    $scope.branchScheduleInfo = function (indexsst) {
+        branchTemplate.getBranchScheduleInfo(indexsst,$rootScope._date);
     };
     // // 筛选是否包含该对象
     // function findElem(arrayToSearch,val){
