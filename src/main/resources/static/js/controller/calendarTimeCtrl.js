@@ -131,6 +131,17 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         window.location.reload();
     };
 
+    // 拖拽功能
+    $scope.endDragStip = function (event, delta, revertFunc, jsEvent, ui, view) {
+        console.log(event.id)
+        console.log(delta)
+        var param = {};
+        $http.post("/camel/api/dragAndDrop",param,{
+        }).then(function (result) {  //正确请求成功时处理
+
+        }).catch(function (result) { //捕捉错误处理
+        });
+    }
     // // 筛选是否包含该对象
     // function findElem(arrayToSearch,val){
     //     for (var i=0;i<arrayToSearch.length;i++){
@@ -233,6 +244,10 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             editable: false,
             stick: true,
             fixedWeekCount: false,
+            displayEventTime: false,
+            slotEventOverlap: true,
+            eventStartEditable:true,
+
             businessHours: {
                 dow: [ 1, 2, 3, 4, 5 ], // 周一 - 周四
             },
@@ -246,6 +261,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             eventRender: $scope.eventRenders,
             dayClick: $scope.eventOne,
             loading:$scope.jurisdiction,
+            eventDrop:$scope.endDragStip //拖拽功能
             // eventMouseover:$scope.eventMou
             /* Mouseover*/
             /*eventMouseover: $scope.eventMouseover*/
