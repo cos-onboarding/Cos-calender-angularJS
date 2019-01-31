@@ -11,7 +11,7 @@ import java.io.InputStream;
 public class CalendarProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
-        System.out.println("<==============================Registry================================>");
+        System.out.println("<==============================Calender================================>");
         InputStream body = null;
         body = exchange.getIn().getBody(InputStream.class);
         String data = CamelProcessorUtils.setHttpBody(body);

@@ -15,39 +15,43 @@
                     <tr>
                         <td>序号</td>
                         <td>分行名称</td>
-                        <td>标题</td>
-                        <td>内容</td>
-                        <td>开始时间</td>
-                        <td>结束时间</td>
-                        <td>状态</td>
+                        <td>分行级别</td>
+                        <td>完成</td>
+                        <td>未完成</td>
+                        <td>失败</td>
+                        <td>合计</td>
                         <td>操作</td>
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
-                        <td>
-                            <select ng-model="e.userId">
-                                <option ng-repeat="x in branchList" ng-value="x.id">{{x.userName}}</option>
-                            </select>
-                        </td>
-                        <td><input type="text" ng-model="e.title"/></td>
-                        <td><input type="text" ng-model="e.message"/></td>
-                        <td>
-                            <input class="form-control" placeholder="{{e.dateTime}}"
-                                   moment-picker="ctrl3.timepicker"
-                                   ng-model="e.dateTime"
-                                   format="HH:mm:ss"
-                                   ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false">
-                        </td>
-                        <td>
-                            <input class="form-control" placeholder="{{e.endTime}}"
-                                   moment-picker="ctrl2.timepicker"
-                                   ng-model="e.endTime"
-                                   format="HH:mm:ss"
-                                   ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false">
-                        </td>
-                        <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">删除</button></td>
+                        <td><input type="text" ng-model="e.name"/></td>
+                        <td><input type="text" ng-model="e.level"/></td>
+                        <td><input type="text" ng-model="e.finish"/></td>
+                        <td><input type="text" ng-model="e.unfinished"/></td>
+                        <td><input type="text" ng-model="e.fail"/></td>
+                        <td><input type="text" ng-model="e.total"/></td>
+                        <td><button type="button" class="btn btn-primary" ng-click="branchScheduleInfo($index)">↓</button></td>
+                    <table style="width: 80%" ng-show="show">
+                        <tr>
+                            <td>人员名称</td>
+                            <td>标题</td>
+                            <td>内容</td>
+                            <td>开始时间</td>
+                            <td>结束时间</td>
+                            <td>状态</td>
+                            <td>操作</td>
+                        </tr>
+                    <tr ng-repeat="x in branchStaffList" >
+                        <td>{{$indexSt + 1}}</td>
+                        <td><input type="text" ng-model="x.userName"/></td>
+                        <td><input type="text" ng-model="x.title"/></td>
+                        <td><input type="text" ng-model="x.body"/></td>
+                        <td><input type="text" ng-model="x.startTime"/></td>
+                        <td><input type="text" ng-model="x.endTime"/></td>
+                        <td><input type="text" ng-model="x.type"/></td>
+                        <td><button type="button" class="btn btn-primary" ng-click="delBranchStaff($indexSt)">↓</button></td>
+                    </tr>
+                    </table>
                     </tr>
                 </table>
             </div>

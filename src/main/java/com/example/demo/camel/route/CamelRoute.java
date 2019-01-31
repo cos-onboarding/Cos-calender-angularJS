@@ -49,6 +49,16 @@ public class CamelRoute extends RouteBuilder {
 
 	@Value("${getAllBranchUrl.url}")
 	private String getAllBranchUrl;
+
+	@Value("${calender.head.office.url}")
+	private String headOfficeListUrl;
+
+	@Value("${calender.day.branch.url}")
+	private String dayAllBranchScheduleUrl;
+
+	@Value("${calender.day.branch.staff.url}")
+	private String dayBranchStaffInfoUrl;
+
 	
 	@Override
 	public void configure() throws Exception {
@@ -117,6 +127,27 @@ public class CamelRoute extends RouteBuilder {
 				.post("/getStaffList")
 				.to("direct:getStaffListService");
 		from("direct:getStaffListService").process(new CalendarProcessor()).to(getStaffListUrl);
+
+		rest("/api/")
+				.id("daySchedule-route")
+				.consumes("application/json")
+				.post("/getHeadOfficeList")
+				.to("direct:getHeadOfficeListService");
+		from("direct:getHeadOfficeListService").process(new CalendarProcessor()).to(headOfficeListUrl);
+
+		rest("/api/")
+				.id("daySchedule-route")
+				.consumes("application/json")
+				.post("/getAllBranchSchedule")
+				.to("direct:getAllBranchScheduleService");
+		from("direct:getAllBranchScheduleService").process(new CalendarProcessor()).to(dayAllBranchScheduleUrl);
+
+		rest("/api/")
+				.id("daySchedule-route")
+				.consumes("application/json")
+				.post("/dayBranchStaffInfo")
+				.to("direct:dayBranchStaffInfoService");
+		from("direct:dayBranchStaffInfoService").process(new CalendarProcessor()).to(dayBranchStaffInfoUrl);
 		
 		rest("/api/")
 		  .id("usrcheck-route")
