@@ -14,5 +14,16 @@ app.service('chServer', [function ($scope) {
         timeStampDay:function (times) {
             return new Date(times).toLocaleTimeString().replace("上午"," ").replace("下午"," ");
         },
+        dateAddDays:function (dataStr,dayCount){
+            var isdate = new Date(dataStr);  //把日期字符串转换成日期格式
+            var pdate = isdate.getFullYear() + "-" + (isdate.getMonth()+1) + "-" + (isdate.getDate());   //把日期格式转换成字符串
+            return pdate;
+        },
+        dateTimeChuo:function (dataStr,dayCount) {
+            var date1 = new Date(parseInt(dataStr));
+            date1.setDate(date1.getDate() + dayCount);
+            var timestamp2 = new Date(date1).getTime();
+            return timestamp2;
+        }
     }
 }]);

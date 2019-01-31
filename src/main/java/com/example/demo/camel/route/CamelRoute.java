@@ -59,6 +59,8 @@ public class CamelRoute extends RouteBuilder {
 	@Value("${calender.day.branch.staff.url}")
 	private String dayBranchStaffInfoUrl;
 
+	@Value("${dragAndDrop.url}")
+	private String dragAndDropUrl;
 	
 	@Override
 	public void configure() throws Exception {
@@ -78,6 +80,13 @@ public class CamelRoute extends RouteBuilder {
 		  .post("/login")
 		  .to("direct:loginService");
 		from("direct:loginService").process(new LoginProcessor()).to(loginUrl);
+
+		rest("/api/")
+				.id("login-route")
+				.consumes("application/json")
+				.post("/dragAndDrop")
+				.to("direct:dragAndDropService");
+		from("direct:dragAndDropService").process(new CalendarProcessor()).to(dragAndDropUrl);
 		
 		rest("/api/")
 		  .id("registry-route")

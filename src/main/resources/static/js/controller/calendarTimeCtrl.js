@@ -1,4 +1,4 @@
-app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate) {
+app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate,chServer) {
     $rootScope.isLandingPage = false;
     $rootScope.sites = [
         {site : "完成", val : 0},
@@ -95,7 +95,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
     // 点击日期
     $scope.eventOne = function (date, allDay, jsEvent, view) {
-        this._date = date._i;
+        $rootScope._date = date._i;
         if($rootScope.rid == 2){ // 领导
             manager.allEventOnes(date, allDay, jsEvent, view,$scope.branchId);
             manager.getStaff(); // 查询员工
@@ -143,16 +143,25 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     };
     // 拖拽功能
     $scope.endDragStip = function (event, delta, revertFunc, jsEvent, ui, view) {
-        console.log(event.id)
-        console.log(delta)
-        var param = {};
+        console.log(event)
+        console.log(delta._days)
+        var timeStamp = chServer.dateTimeChuo(event.info_id,delta._days);
+        var allToDay = chServer.dateAddDays(event.start,delta._days);
+        // console.log(timeStamp);
+        console.log(allToDay);
+
+        var param = {id:event.id,timeStamp:timeStamp,timeDay:allToDay};
         $http.post("/camel/api/dragAndDrop",param,{
         }).then(function (result) {  //正确请求成功时处理
-
         }).catch(function (result) { //捕捉错误处理
         });
     }
-    
+
+
+    $scope.branchScheduleInfo = function (indexsst) {
+        branchTemplate.getBranchScheduleInfo(indexsst,$rootScope._date);
+    };
+
     // // 筛选是否包含该对象
     // function findElem(arrayToSearch,val){
     //     for (var i=0;i<arrayToSearch.length;i++){
