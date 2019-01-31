@@ -36,11 +36,10 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             if($rootScope.rid == 2){ // 领导
                 managerLoads($scope.branchId);
             }else if ($rootScope.rid == 3){ // 总行
-                 // headOfficeView($scope.branchId);
+                headOfficeView($scope.branchId);
             }else{ //员工
                 staffLoads(param);
             }
-
         }).catch(function (result) { //捕捉错误处理
         });
     }
@@ -83,15 +82,27 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }).catch(function (result) { //捕捉错误处理
         });
     };
+    function headOfficeView() {
+        $http.post("/camel/api/getHeadOfficeList",{
+        }).then(function (result){
+            angular.copy(result.data, $scope.events)
+            console.log("所有:"+JSON.stringify($scope.events));
+        }).catch(function (result){
+
+            alert("-------------fail----------");
+        });
+    };
 
     // 点击日期
     $scope.eventOne = function (date, allDay, jsEvent, view) {
+        this._date = date._i;
         if($rootScope.rid == 2){ // 领导
             manager.allEventOnes(date, allDay, jsEvent, view,$scope.branchId);
             manager.getStaff(); // 查询员工
         }else if ($rootScope.rid == 3){ // 总行
-            branchTemplate.branchEventOne();
-            branchTemplate.getBranch();
+            branchTemplate.branchEventOne(date, allDay, jsEvent, view,$scope.branchId);
+
+            // branchTemplate.getBranch();
         }else{ //员工
             modalsss.eventOnes(date, allDay, jsEvent, view,$scope.userId,$scope.branchId);
         }
@@ -130,7 +141,6 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }
         window.location.reload();
     };
-
     // 拖拽功能
     $scope.endDragStip = function (event, delta, revertFunc, jsEvent, ui, view) {
         console.log(event.id)
@@ -142,6 +152,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }).catch(function (result) { //捕捉错误处理
         });
     }
+    
     // // 筛选是否包含该对象
     // function findElem(arrayToSearch,val){
     //     for (var i=0;i<arrayToSearch.length;i++){
