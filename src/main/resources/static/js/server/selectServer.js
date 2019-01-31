@@ -12,7 +12,13 @@ app.service('chServer', [function ($scope) {
             return new Date(parseInt(times)).toLocaleDateString();
         },
         timeStampDay:function (times) {
-            return new Date(times).toLocaleTimeString().replace("上午"," ").replace("下午"," ");
+            console.log("什么垃圾："+times)
+            var toDay = new Date(times);
+            var hours = toDay.getHours();
+            var minutes= toDay.getMinutes();
+            var seconds = toDay.getSeconds();
+            console.log("什么垃圾123123："+hours + ":"+minutes+":"+seconds)
+            return " "+hours + ":"+minutes+":"+seconds;
         },
         dateAddDays:function (dataStr,dayCount){
             var isdate = new Date(dataStr);  //把日期字符串转换成日期格式
