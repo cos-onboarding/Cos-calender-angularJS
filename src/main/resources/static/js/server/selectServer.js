@@ -12,12 +12,10 @@ app.service('chServer', [function ($scope) {
             return new Date(parseInt(times)).toLocaleDateString();
         },
         timeStampDay:function (times) {
-            console.log("什么垃圾："+times)
             var toDay = new Date(times);
             var hours = toDay.getHours();
             var minutes= toDay.getMinutes();
             var seconds = toDay.getSeconds();
-            console.log("什么垃圾123123："+hours + ":"+minutes+":"+seconds)
             return " "+hours + ":"+minutes+":"+seconds;
         },
         dateAddDays:function (dataStr,dayCount){

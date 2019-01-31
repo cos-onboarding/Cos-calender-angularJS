@@ -147,7 +147,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         console.log(delta._days)
         var timeStamp = chServer.dateTimeChuo(event.info_id,delta._days);
         var allToDay = chServer.dateAddDays(event.start,delta._days);
-        // console.log(timeStamp);
+        console.log(timeStamp);
         console.log(allToDay);
 
         var param = {id:event.id,timeStamp:timeStamp,timeDay:allToDay};
@@ -268,11 +268,9 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             slotEventOverlap: true,
             eventStartEditable:true,
             //
-            // businessHours: {
-            //     dow: [ 1, 2, 3, 4, 5 ], // 周一 - 周四
-            //     start: '01:00', // 上午10点开始
-            //     end: '24:00', // 下午18点结束
-            // },
+            businessHours: {
+                dow: [ 1, 2, 3, 4, 5 ], // 周一 - 周四
+            },
             header:{
                 left: 'prevYear, nextYear, title, ',
                 center: '',
@@ -283,7 +281,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             eventRender: $scope.eventRenders,
             dayClick: $scope.eventOne,
             loading:$scope.jurisdiction,
-            eventConstraint:$scope.endDragStip //拖拽功能
+            eventDrop:$scope.endDragStip //拖拽功能
             // eventMouseover:$scope.eventMou
             /* Mouseover*/
             /*eventMouseover: $scope.eventMouseover*/
