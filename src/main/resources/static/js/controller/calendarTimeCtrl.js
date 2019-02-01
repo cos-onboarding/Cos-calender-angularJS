@@ -1,4 +1,4 @@
-app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate,chServer) {
+app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate,chServer,branchEditTemplate) {
     $rootScope.isLandingPage = false;
     $scope.selectIds=[];
     $rootScope.sites = [
@@ -155,7 +155,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }).then(function (result) {  //正确请求成功时处理
         }).catch(function (result) { //捕捉错误处理
         });
-    }
+    },
 
 
     $scope.branchScheduleInfo = function (indexsst) {
@@ -180,7 +180,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }else if ($rootScope.rid == 3){ // 总行
             branchTemplate.closeBranchTemplate();
         }else{ //员工
-            modalsss.deleteMSs()
+            modalsss.deleteMSs();
         }
     };
 
@@ -191,8 +191,8 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         var e = new Date(end).getTime() / 1000;
         var m = new Date(start).getMonth();
         var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-        callback(events);
-    };
+        callback(events)
+    };;
 
     $scope.calEventsExt = {
         color: '#f00',
@@ -241,21 +241,27 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     $scope.changeView = function(view,calendar) {
         uiCalendarConfig.calendars[calendar].fullCalendar('changeView',view);
     };
-    /* Change View */
-    // $scope.renderCalender = function(calendar) {
-    //     if(uiCalendarConfig.calendars[calendar]){
-    //         uiCalendarConfig.calendars[calendar].fullCalendar('render');
-    //     }
-    // };
-    /* Render Tooltip */
+
     $scope.eventRenders = function( event, element, view ) {
         element.attr({'tooltip': event.title,
             'tooltip-append-to-body': true});
         $compile(element)($scope);
     };
 
-    /*Mouseover*/
+    $scope.addBranchEditTemplate = function () {
+        branchEditTemplate.branchEidtAddTemplate();
+        branchEditTemplate.getBranch();
+    };
 
+    $scope.closeEditTemplate = function() {
+        branchEditTemplate.closeBranchEditTemplate();
+    };
+    $scope.delItem = function(){
+        branchEditTemplate.branchEditDelRow();
+    };
+    $scope.addBranchSchedule = function () {
+        branchEditTemplate.branchEditAdd();
+    };
 
     /* config object */
     $scope.uiConfig = {
@@ -287,21 +293,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             /*eventMouseover: $scope.eventMouseover*/
         }
     };
-
-
-
-    // $scope.changeLang = function() {
-    //     if($scope.changeTo === 'Hungarian'){
-    //         $scope.uiConfig.calendar.dayNames = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
-    //         $scope.uiConfig.calendar.dayNamesShort = ["Vas", "Hét", "Kedd", "Sze", "Csüt", "Pén", "Szo"];
-    //         $scope.changeTo= 'English';
-    //     } else {
-    //         $scope.uiConfig.calendar.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    //         $scope.uiConfig.calendar.dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    //         $scope.changeTo = 'Hungarian';
-    //     }
-    // };
-    /* event sources array*/
     $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
 })
+
 /* EOF */
