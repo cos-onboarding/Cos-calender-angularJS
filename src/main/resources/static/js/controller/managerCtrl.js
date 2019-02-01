@@ -27,9 +27,9 @@ app.service('manager',function ($rootScope,$http,chServer) {
             $('#managerModal').modal('show');
         },
         //分配日程
-        mAddSchedule:function () {
+        mAddSchedule:function (bid) {
             //追加单独某天的日程
-            var ms = {id:0,title:'',message: '',dateTime: '',endTime:'',infoId:$rootScope.timeStamp,userId:"",type:1,}
+            var ms = {id:0,title:'',message: '',dateTime: '',endTime:'',infoId:$rootScope.timeStamp,userId:"",type:1,bid:bid}
             $rootScope.schedule.push(ms);
         },
         // 删除分配日程
@@ -46,8 +46,18 @@ app.service('manager',function ($rootScope,$http,chServer) {
                 var endTime = $rootScope.schedule[i].endTime;
                 var times = $rootScope.schedule[i].infoId;
                 var d = chServer.dateStampDay(times);
-                var c = chServer.timeStampDay(dateTime);
-                var a = chServer.timeStampDay(endTime);
+                var c = " ";
+                var a = " ";
+                if(typeof dateTime != "string"){
+                    c = chServer.timeStampDay(dateTime);
+                }else{
+                    c =  c + dateTime;
+                }
+                if(typeof endTime != "string"){
+                    a = chServer.timeStampDay(endTime);
+                }else{
+                    a =  a + endTime;
+                }
                 $rootScope.schedule[i].dateTime = d+c;
                 $rootScope.schedule[i].endTime = d+a;
                 console.log(times);
