@@ -52,7 +52,7 @@ app.service('branchTemplate',function ($rootScope,$http) {
         closeBranchTemplate: function () {
             $('#branchModalLabel').modal('hide');
             $rootScope.schedule = [];
-            
+
         },
         saveBranchTaskInfo: function () {
             for (var i = 0; i < $rootScope.schedule.length; i++) {

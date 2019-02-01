@@ -36,10 +36,13 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             // $rootScope.bid = result.data.bid; // 分行ID
             if($rootScope.rid == 2){ // 领导
                 managerLoads($scope.branchId);
+                $scope.uiConfig.calendar.eventStartEditable = false;
             }else if ($rootScope.rid == 3){ // 总行
                 headOfficeView($scope.branchId);
+                $scope.uiConfig.calendar.eventStartEditable = false;
             }else{ //员工
                 staffLoads(param);
+                $scope.uiConfig.calendar.eventStartEditable = true;
             }
         }).catch(function (result) { //捕捉错误处理
         });
@@ -122,7 +125,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     // 添加日程
     $scope.addSchedule = function () {
         if($rootScope.rid == 2){ // 领导
-            manager.mAddSchedule();
+            manager.mAddSchedule($scope.branchId);
         }else if ($rootScope.rid == 3){ // 总行
             branchTemplate.branchAdd($scope.branchId);
         }else{ //员工
@@ -187,6 +190,12 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, timezone, callback) {
+
+        if(new Date(end).getMonth() == 0){
+            console.log((new Date(end).getFullYear()-1) + " -"+ 12)
+        }else{
+            console.log((new Date(end).getFullYear()) + " -"+(new Date(end).getMonth()))
+        }
         var s = new Date(start).getTime() / 1000;
         var e = new Date(end).getTime() / 1000;
         var m = new Date(start).getMonth();
@@ -282,7 +291,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
                 center: '',
                 right: 'today prev,next'
             },
-            eventDrop: $scope.alertOnDrop,
+            // eventDrop: $scope.alertOnDrop,
             eventResize: $scope.alertOnResize,
             eventRender: $scope.eventRenders,
             dayClick: $scope.eventOne,
@@ -293,7 +302,21 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             /*eventMouseover: $scope.eventMouseover*/
         }
     };
-    $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
+
+    // $scope.changeLang = function() {
+    //     if($scope.changeTo === 'Hungarian'){
+    //         $scope.uiConfig.calendar.dayNames = ["Vasárnap", "Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat"];
+    //         $scope.uiConfig.calendar.dayNamesShort = ["Vas", "Hét", "Kedd", "Sze", "Csüt", "Pén", "Szo"];
+    //         $scope.changeTo= 'English';
+    //     } else {
+    //         $scope.uiConfig.calendar.dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    //         $scope.uiConfig.calendar.dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    //         $scope.changeTo = 'Hungarian';
+    //     }
+    // };
+    /* event sources array*/
+    $scope.eventSources = [$scope.events, $scope.eventsF];
+
 })
 
 /* EOF */
