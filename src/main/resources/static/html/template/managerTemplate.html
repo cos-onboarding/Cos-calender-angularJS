@@ -25,12 +25,12 @@
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
                         <td>
-                            <select ng-model="e.userId">
+                            <select ng-model="e.userId" style="width:200px;height:35px">
                                 <option ng-repeat="x in staffList" ng-value="x.id">{{x.userName}}</option>
                             </select>
                         </td>
-                        <td><input type="text" ng-model="e.title"/></td>
-                        <td><input type="text" ng-model="e.message"/></td>
+                        <td><input type="text" style="width:200px;height:35px" ng-model="e.title"/></td>
+                        <td><input type="text" style="width:200px;height:35px" ng-model="e.message"/></td>
                         <td>
                             <input class="form-control" placeholder="{{e.dateTime}}"
                                    moment-picker="ctrl3.timepicker"
@@ -48,7 +48,7 @@
                                    show-header="false">
                         </td>
                         <td>
-                            <select ng-model="e.type" >
+                            <select ng-model="e.type" style="width:200px;height:35px">
                                 <option ng-repeat="item in sites" ng-value="item.val">{{item.site}}</option>
                             </select>
                         </td>
