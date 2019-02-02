@@ -1,8 +1,5 @@
-app.service('branchTemplate',function ($rootScope,$http) {
+app.service('branchEditTemplate',function ($rootScope,$http) {
     $rootScope.branchList = [];
-    $rootScope.branchStaffList = [];
-    $rootScope.isShow = false;
-
     return {
         //获取分行及经理名称
         getBranch: function () {
@@ -13,21 +10,8 @@ app.service('branchTemplate',function ($rootScope,$http) {
                 console.info(result);
             });
         },
-        // 点击日期  获取日程信息
-        branchEventOne: function (date, allDay, jsEvent, view) {
-
-            var param = {time: date._i};
-            $http.post("/camel/api/getAllBranchSchedule", param, {}).then(function (result) {  //正确请求成功时处理
-                if (result.data.length != 0) {
-                    $rootScope.schedule = result.data;
-                    console.log(JSON.stringify($rootScope.schedule));
-                }
-            }).catch(function (result) { //捕捉错误处理
-            });
-            $('#branchModalLabel').modal('show');
-        },
         //分配日程
-        branchAdd: function () {
+        branchEditAdd: function () {
             //追加单独某天的日程
             var ms = {
                 id: 0,
@@ -41,20 +25,21 @@ app.service('branchTemplate',function ($rootScope,$http) {
             }
             $rootScope.schedule.push(ms);
         },
-        // 删除分配日程
-        // mDeleteSchedule:function (indexs) {
-        //     if($rootScope.schedule[indexs].id != 0){
-        //         $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
-        //     }
-        //     $rootScope.schedule.splice(indexs,1);
-        // },
-        //关闭Template
-        closeBranchTemplate: function () {
-            $('#branchModalLabel').modal('hide');
-            $rootScope.schedule = [];
-
+        //删除分配日程
+        branchEditDelRow: function (indexs) {
+            /*if ($rootScope.schedule[indexs].id != 0) {
+                $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
+            }*/
+            $rootScope.schedule.splice(indexs, 1);
         },
-        saveBranchTaskInfo: function () {
+
+        //关闭Template
+        closeBranchEditTemplate:function () {
+            $('#branchEditModalLabel').modal('hide');
+            $rootScope.schedule = [];
+        },
+
+        saveBranchTaskInfo:function() {
             for (var i = 0; i < $rootScope.schedule.length; i++) {
                 var dateTime = $rootScope.schedule[i].dateTime;
                 var endTime = $rootScope.schedule[i].endTime;
@@ -79,28 +64,17 @@ app.service('branchTemplate',function ($rootScope,$http) {
             });
             $rootScope.scheduleDel = [];
             $('#managerModal').modal('hide');
-            $rootScope.isShow = !$rootScope.isShow;
         },
         deleteTemplateRowInfo: function (indexs) {
             console.log()
-            if ($rootScope.branchStaffList[indexs].id != 0) {
-                $rootScope.scheduleDel.push($rootScope.branchStaffList[indexs]);
+            if($rootScope.schedule[indexs].id != 0) {
+                $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
             }
-            $rootScope.branchStaffList.splice(indexs, 1);
-            if($rootScope.branchStaffList.length==0){
-                $rootScope.isShow = !$rootScope.isShow;
-            }
+            $rootScope.schedule.splice(indexs,1);
         },
-        //获取当天公司下的所有人员预约信息
-        getBranchScheduleInfo: function (indexs, date) {
-            var params = {id: $rootScope.schedule[indexs].id, time: date};
-            $http.post("/camel/api/dayBranchStaffInfo", params, {}).then(function (result){
-                $rootScope.branchStaffList = result.data;
-                console.log(JSON.stringify($rootScope.branchStaffList));
-                $rootScope.isShow = !$rootScope.isShow;
-            }).catch(function (result) { //捕捉错误处理
-                console.info(result);
-            });
-        }
+        //点击add Item button 弹窗
+        branchEidtAddTemplate: function () {
+            $('#branchEditModalLabel').modal('show');
+        },
     }
 });

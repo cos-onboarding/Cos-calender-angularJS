@@ -8,7 +8,7 @@
                 <button type="button" class="close" ng-click="closeTemplate()" style="width: auto">
                     &times;
                 </button>
-                <button class="btn btn-primary" ng-click="addSchedule()">分配日程</button>
+                <!--<button class="btn btn-primary" ng-click="addSchedule()">分配日程</button>-->
             </div>
             <div class="modal-body">
                 <table style="width: 100%">
@@ -42,7 +42,7 @@
                             <td>开始时间</td>
                             <td>结束时间</td>
                             <td>状态</td>
-                            <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">╳</button></td>
+                            <td>操作</td>
                         </tr>
                     <tr ng-repeat="x in branchStaffList" >
                     <td><input type="checkbox" ng-checked="all"></td>

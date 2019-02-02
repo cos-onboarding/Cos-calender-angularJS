@@ -1,0 +1,58 @@
+<div>
+    <div class="modal" style="height:50%;width:80%; margin:0 auto; botton: auto" id="branchEditModalLabel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div>
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    分行日程
+                </h4>
+                <button class="btn btn-primary" ng-click="addBranchSchedule()">分配日程</button>
+            </div>
+            <div class="modal-body">
+                <table style="width: 100%">
+                    <tr>
+                        <td>序号</td>
+                        <td>分行名称</td>
+                        <td>标题</td>
+                        <td>内容</td>
+                        <td>开始时间</td>
+                        <td>结束时间</td>
+                        <td>操作</td>
+                    </tr>
+                    <tr ng-repeat="e in schedule">
+                        <td>{{$index + 1}}</td>
+                        <td style="height: 30px">
+                            <select ng-model="e.userId">
+                                <option ng-repeat="x in branchList" ng-value="x.id">{{x.userName}}</option>
+                            </select>
+                        </td>
+                        <td><input type="text" ng-model="e.title" style="height: 30px; width: 220px"/></td>
+                        <td><input type="text" ng-model="e.message" style="height: 30px; width: 220px"/></td>
+                        <td style="height: 30px">
+                            <input class="form-control" placeholder="{{e.dateTime}}"
+                                   moment-picker="ctrl3.timepicker"
+                                   ng-model="e.dateTime"
+                                   format="HH:mm:ss"
+                                   ng-model-options="{ updateOn: 'blur' }"
+                                   show-header="false" style="height: 30px">
+                        </td>
+                        <td style="height: 30px">
+                            <input class="form-control" placeholder="{{e.endTime}}"
+                                   moment-picker="ctrl2.timepicker"
+                                   ng-model="e.endTime"
+                                   format="HH:mm:ss"
+                                   ng-model-options="{ updateOn: 'blur' }"
+                                   show-header="false" style="height: 30px">
+                        </td>
+                        <td style="height: 30px"><button type="button" style="height: 30px" class="btn btn-primary" ng-click="delItem($index)">删除</button></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="closeEditTemplate()">关闭
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="saveTemplate()">保存
+                </button>
+            </div>
+        </div><!-- /.modal -->
+    </div>
+</div>

@@ -123,6 +123,13 @@ public class CamelRoute extends RouteBuilder {
 				.to("direct:calendarSchduleService");
 		from("direct:calendarSchduleService").process(new CalendarProcessor()).to(calendarSchduleUrl);
 
+        rest("/api/")
+                .id("registry-route")
+                .consumes("application/json")
+                .post("/getAllBranch")
+                .to("direct:getAllBranchService");
+        from("direct:getAllBranchService").process(new RegistryProcessor()).to(getAllBranchUrl);
+
 		rest("/api/")
 				.id("daySchedule-route")
 				.consumes("application/json")
