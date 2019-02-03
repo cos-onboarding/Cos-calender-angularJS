@@ -141,7 +141,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }else{ //员工
             modalsss.updateMss($scope.userId);
         }
-
+        window.location.reload();
     };
     // 拖拽功能
     $scope.endDragStip = function (event, delta, revertFunc, jsEvent, ui, view) {
