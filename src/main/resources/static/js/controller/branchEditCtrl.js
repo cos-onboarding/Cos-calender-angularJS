@@ -20,6 +20,7 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
                 dateTime: '',
                 endTime: '',
                 infoId: $rootScope.timeStamp,
+                dateTime:"",
                 userId: "",
                 type: 1
             }
@@ -45,7 +46,8 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
                     var times = Date.parse(new Date());
                     $rootScope.schedule[i].startTime = startTime;
                     $rootScope.schedule[i].endTime = endTime;
-                    $rootScope.schedule[i].infoId = times;
+                    $rootScope.schedule[i].infoId = new Date(new Date().toLocaleDateString()).getTime() + 8 * 60 * 60 * 1000;
+                    $rootScope.schedule[i].dateTime = times.toLocaleDateString().replace(/\//g, "-") + " " + times.toTimeString().substr(0, 8);
                     console.log(times);
                 }
                 var newSchedule = $rootScope.schedule;
