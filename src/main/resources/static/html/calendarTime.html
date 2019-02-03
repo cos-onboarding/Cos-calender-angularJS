@@ -28,7 +28,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div><button class="btn btn-primary" ng-click="addBranchEditTemplate()">Add Item</button></div>
+                                <div><button class="btn btn-primary" ng-click="addBranchEditTemplate()" ng-if="rid==3">Add Item</button></div>
                                 <div id="content" class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
                             </tab>
                         </tabset>

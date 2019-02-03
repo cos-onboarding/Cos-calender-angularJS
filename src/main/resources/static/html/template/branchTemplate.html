@@ -24,18 +24,18 @@
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
-                        <td><input type="text" ng-model="e.NAME"/></td>
-                        <td><input type="text" ng-model="e.LEVEL"/></td>
-                        <td><input type="text" ng-model="e.finish"/></td>
-                        <td><input type="text" ng-model="e.unfinished"/></td>
-                        <td><input type="text" ng-model="e.fail"/></td>
-                        <td><input type="text" ng-model="e.total"/></td>
+                        <td><input type="text" ng-model="e.NAME"  disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.LEVEL"  disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.finish"  disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.unfinished"  disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.fail"  disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.total"  disabled="disabled"/></td>
                         <td><button type="button" class="btn btn-primary" ng-click="branchScheduleInfo($index)">▼</button></td>
                         <td><input type="text" ng-model="e.id" style="display: none" /></td>
 
                     <table style="width: 80%" ng-show="isShow">
                         <tr>
-                            <td><input type="checkbox" ng-model="all"></td>
+                            <td>    </td>
                             <td>人员名称</td>
                             <td>标题</td>
                             <td>内容</td>
@@ -45,16 +45,16 @@
                             <td>操作</td>
                         </tr>
                     <tr ng-repeat="x in branchStaffList" >
-                    <td><input type="checkbox" ng-checked="all"></td>
-                    <td><input type="text" ng-model="x.userName"/></td>
-                    <td><input type="text" ng-model="x.title"/></td>
-                    <td><input type="text" ng-model="x.body"/></td>
-                    <td><input type="text" ng-model="x.startTime"/></td>
-                    <td><input type="text" ng-model="x.endTime"/></td>
+                    <td></td>
+                    <td><input type="text" ng-model="x.userName" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.title" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.body" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.startTime"  disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.endTime" disabled="disabled"/></td>
                     <td>
-                        <input type="text" ng-if="x.TYPE==0" value="complete"/>
-                        <input type="text" ng-if="x.TYPE==1" value="failed"/>
-                        <input type="text" ng-if="x.TYPE==2" value="uncomplete"/>
+                        <input type="text" ng-if="x.TYPE==0" value="complete" disabled="disabled"/>
+                        <input type="text" ng-if="x.TYPE==1" value="failed" disabled="disabled"/>
+                        <input type="text" ng-if="x.TYPE==2" value="uncomplete" disabled="disabled"/>
                     </td>
                     <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">╳</button></td>
                 </tr>
@@ -65,8 +65,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="closeTemplate()">关闭
                 </button>
-                <button type="button" class="btn btn-primary" ng-click="saveTemplate()">保存
-                </button>
+                <!--<button type="button" class="btn btn-primary" ng-click="saveTemplate()">保存-->
+                <!--</button>-->
             </div>
         </div><!-- /.modal -->
     </div>

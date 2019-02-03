@@ -27,10 +27,9 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
         },
         //删除分配日程
         branchEditDelRow: function (indexs) {
-            /*if ($rootScope.schedule[indexs].id != 0) {
-                $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
-            }*/
-            $rootScope.schedule.splice(indexs, 1);
+            if(indexs>=0) {
+                $rootScope.schedule.splice(indexs, 1);
+            }
         },
 
         //关闭Template
@@ -40,24 +39,22 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
         },
 
         saveBranchTaskInfo:function() {
-            for (var i = 0; i < $rootScope.schedule.length; i++) {
-                var dateTime = $rootScope.schedule[i].dateTime;
-                var endTime = $rootScope.schedule[i].endTime;
-                var times = $rootScope.schedule[i].infoId;
-                var d = chServer.dateStampDay(times);
-                var c = chServer.timeStampDay(dateTime);
-                var a = chServer.timeStampDay(endTime);
-                $rootScope.schedule[i].dateTime = d + c;
-                $rootScope.schedule[i].endTime = d + a;
-                console.log(times);
-            }
-            var param = {
-                time: $rootScope.timeStamp,
-                scheduleDel: $rootScope.scheduleDel,
-                schedule: $rootScope.schedule
-            }
+                for (var i = 0; i < $rootScope.schedule.length; i++) {
+                    var startTime = new Date($rootScope.schedule[i].startTime._d).toISOString().slice(0,10);
+                    var endTime = new Date($rootScope.schedule[i].endTime._d).toISOString().slice(0,10);
+                    var times = Date.parse(new Date());
+                    $rootScope.schedule[i].startTime = startTime;
+                    $rootScope.schedule[i].endTime = endTime;
+                    $rootScope.schedule[i].infoId = times;
+                    console.log(times);
+                }
+                var newSchedule = $rootScope.schedule;
+                var param = {
+                    newSchedule: newSchedule
+                }
             console.log(JSON.stringify(param))
-            $http.post("/camel/api/saveCalendarSchdule", param, {}).then(function (result) {  //正确请求成功时处理
+            $http.post("/camel/api/saveBranchCalendar", param, {}).then(function (result) {  //正确请求成功时处理
+                window.location.reload();
 
             }).catch(function (result) { //捕捉错误处理
                 console.info(result);
@@ -67,7 +64,7 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
         },
         deleteTemplateRowInfo: function (indexs) {
             console.log()
-            if($rootScope.schedule[indexs].id != 0) {
+            if($rootScope.schedule[indexs] != '') {
                 $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
             }
             $rootScope.schedule.splice(indexs,1);

@@ -21,29 +21,29 @@
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
                         <td style="height: 30px">
-                            <select ng-model="e.userId">
+                            <select ng-model="e.rowId" >
                                 <option ng-repeat="x in branchList" ng-value="x.id">{{x.userName}}</option>
                             </select>
                         </td>
-                        <td><input type="text" ng-model="e.title" style="height: 30px; width: 220px"/></td>
-                        <td><input type="text" ng-model="e.message" style="height: 30px; width: 220px"/></td>
+                        <td><input type="text" style="height: 42px; width: 220px" ng-model="e.title"/></td>
+                        <td><input type="text" style="height: 42px; width: 220px" ng-model="e.message"/></td>
                         <td style="height: 30px">
-                            <input class="form-control" placeholder="{{e.dateTime}}"
-                                   moment-picker="ctrl3.timepicker"
-                                   ng-model="e.dateTime"
-                                   format="HH:mm:ss"
-                                   ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false" style="height: 30px">
+                            <input class="form-control"
+                                   format="YYYY-MM-DD"
+                                   ng-model="e.startTime"
+                                   moment-picker="ctrl.datepicker"
+                                   ng-model-options="{ updateOn: 'blur' }" style="height: 30px">
                         </td>
                         <td style="height: 30px">
-                            <input class="form-control" placeholder="{{e.endTime}}"
-                                   moment-picker="ctrl2.timepicker"
+                            <input class="form-control"
+                                   format="YYYY-MM-DD"
                                    ng-model="e.endTime"
-                                   format="HH:mm:ss"
+                                   moment-picker="ctrl1.datepicker"
                                    ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false" style="height: 30px">
+                                   show-header="false" style="height: 30px"/>
                         </td>
                         <td style="height: 30px"><button type="button" style="height: 30px" class="btn btn-primary" ng-click="delItem($index)">删除</button></td>
+                        <td><input type="text" ng-model="e.id" style="display: none" /></td>
                     </tr>
                 </table>
             </div>
@@ -53,6 +53,6 @@
                 <button type="button" class="btn btn-primary" ng-click="saveTemplate()">保存
                 </button>
             </div>
-        </div><!-- /.modal -->
+        </div>
     </div>
 </div>

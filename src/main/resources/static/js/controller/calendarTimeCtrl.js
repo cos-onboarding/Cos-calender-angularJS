@@ -105,7 +105,6 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             manager.getStaff(); // 查询员工
         }else if ($rootScope.rid == 3){ // 总行
             branchTemplate.branchEventOne(date, allDay, jsEvent, view,$scope.branchId);
-
         }else{ //员工
             modalsss.eventOnes(date, allDay, jsEvent, view,$scope.userId,$scope.branchId);
         }
@@ -138,11 +137,11 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         if($rootScope.rid == 2){ // 领导
             manager.mSaveSchedul();
         }else if ($rootScope.rid == 3){ // 总行
-            branchTemplate.saveBranchTaskInfo();
+            branchEditTemplate.saveBranchTaskInfo($scope.rowId);
         }else{ //员工
             modalsss.updateMss($scope.userId);
         }
-        window.location.reload();
+
     };
     // 拖拽功能
     $scope.endDragStip = function (event, delta, revertFunc, jsEvent, ui, view) {
@@ -265,8 +264,8 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     $scope.closeEditTemplate = function() {
         branchEditTemplate.closeBranchEditTemplate();
     };
-    $scope.delItem = function(){
-        branchEditTemplate.branchEditDelRow();
+    $scope.delItem = function(indexs){
+        branchEditTemplate.branchEditDelRow(indexs);
     };
     $scope.addBranchSchedule = function () {
         branchEditTemplate.branchEditAdd();

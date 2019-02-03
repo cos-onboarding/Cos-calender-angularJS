@@ -61,6 +61,10 @@ public class CamelRoute extends RouteBuilder {
 
 	@Value("${dragAndDrop.url}")
 	private String dragAndDropUrl;
+
+
+	@Value("${calender.save.branch.url}")
+	private String saveBranchCalendarUrl;
 	
 	@Override
 	public void configure() throws Exception {
@@ -164,6 +168,13 @@ public class CamelRoute extends RouteBuilder {
 				.post("/dayBranchStaffInfo")
 				.to("direct:dayBranchStaffInfoService");
 		from("direct:dayBranchStaffInfoService").process(new CalendarProcessor()).to(dayBranchStaffInfoUrl);
+
+		rest("/api/")
+				.id("daySchedule-route")
+				.consumes("application/json")
+				.post("/saveBranchCalendar")
+				.to("direct:saveBranchCalendarService");
+		from("direct:saveBranchCalendarService").process(new CalendarProcessor()).to(saveBranchCalendarUrl);
 		
 		rest("/api/")
 		  .id("usrcheck-route")
