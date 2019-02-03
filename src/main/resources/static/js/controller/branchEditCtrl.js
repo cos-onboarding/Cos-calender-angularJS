@@ -47,7 +47,7 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
                     $rootScope.schedule[i].startTime = startTime;
                     $rootScope.schedule[i].endTime = endTime;
                     $rootScope.schedule[i].infoId = new Date(new Date().toLocaleDateString()).getTime() + 8 * 60 * 60 * 1000;
-                    $rootScope.schedule[i].dateTime = times.toLocaleDateString().replace(/\//g, "-") + " " + times.toTimeString().substr(0, 8);
+                    $rootScope.schedule[i].dateTime = new Date(times).toLocaleDateString().replace(/\//g, "-") + " " + new Date(times).toTimeString().substr(0, 8);
                     console.log(times);
                 }
                 var newSchedule = $rootScope.schedule;
@@ -65,10 +65,7 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
             $('#managerModal').modal('hide');
         },
         deleteTemplateRowInfo: function (indexs) {
-            console.log()
-            if($rootScope.schedule[indexs] != '') {
-                $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
-            }
+            console.log();
             $rootScope.schedule.splice(indexs,1);
         },
         //点击add Item button 弹窗
