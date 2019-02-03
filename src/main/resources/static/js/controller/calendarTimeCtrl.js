@@ -2,14 +2,14 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     $rootScope.isLandingPage = false;
     $scope.selectIds=[];
     $rootScope.sites = [
-        {site : "完成", val : 0},
-        {site : "未完成", val : 1},
-        {site : "失败", val : 2}
+        {site : "Completed", val : 0},
+        {site : "uncompleted", val : 1},
+        {site : "Fail", val : 2}
     ];
-    /* 页面日历标题*/
+    /* Page calendar title*/
     $scope.events = [];
-    $scope.userId = $stateParams.id; // 员工ID
-    $scope.branchId = $stateParams.branchId; // 分行ID
+    $scope.userId = $stateParams.id; // 员工ID The employee ID
+    $scope.branchId = $stateParams.branchId; // 分行ID  The branch ID
     /**
      * calendarDemoApp - 0.9.0
      */
@@ -18,7 +18,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     var d = date.getDate();
     var m = date.getMonth();
     var y = date.getFullYear();
-    $rootScope.timeStamp = ''; // 获取每个组唯一时间戳
+    $rootScope.timeStamp = ''; // 获取每个组唯一时间戳    Gets a unique timestamp for each group
     $scope.changeTo = 'Hungarian';
     /* event source that pulls from google.com */
     $scope.eventSource = {
@@ -27,20 +27,21 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         currentTimezone: 'America/Chicago' // an option!
     };
 
+    //Access permissions
     //获取权限
     $scope.jurisdiction = function() {
         var param = {userId: $scope.userId};
         $http.post("/camel/api/getGrade",param,{
-        }).then(function (result) {  //正确请求成功时处理
-            $rootScope.rid = result.data.grade; // 权限ID
-            // $rootScope.bid = result.data.bid; // 分行ID
-            if($rootScope.rid == 2){ // 领导
+        }).then(function (result) {  //
+            $rootScope.rid = result.data.grade; // 权限ID  Authorization ID
+            // $rootScope.bid = result.data.bid; // 分行ID  The branch ID
+            if($rootScope.rid == 2){ // 领导   leadership
                 managerLoads($scope.branchId);
                 $scope.uiConfig.calendar.eventStartEditable = false;
-            }else if ($rootScope.rid == 3){ // 总行
+            }else if ($rootScope.rid == 3){ // 总行   The headquarters of
                 headOfficeView($scope.branchId);
                 $scope.uiConfig.calendar.eventStartEditable = false;
-            }else{ //员工
+            }else{ //员工  employees
                 staffLoads(param);
                 $scope.uiConfig.calendar.eventStartEditable = true;
             }
@@ -48,10 +49,11 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         });
     }
     // jurisdiction();
+    //Load the employee's own schedule
     //加载员工自己日程
     function staffLoads(param) {
         $http.post("/camel/api/getCalendarTimeList",param,{
-        }).then(function (result) {  //正确请求成功时处理
+        }).then(function (result) {
             angular.copy(result.data, $scope.events)
             for (var i =0;i<$scope.events.length;i++){
                 if($scope.events[i].type == 0){
@@ -62,16 +64,16 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
                     $scope.events[i].color = "red"
                 }
             }
-            console.log("员工自己:"+JSON.stringify($scope.events));
-        }).catch(function (result) { //捕捉错误处理
+        }).catch(function (result) {
         });
     };
 
+    //Load all employee data
     //加载所有员工数据
     function managerLoads(bid) {
         var param = {bid: bid};
         $http.post("/camel/api/getAllTimeSchedule",param,{
-        }).then(function (result) {  //正确请求成功时处理
+        }).then(function (result) {
             angular.copy(result.data, $scope.events)
             for (var i =0;i<$scope.events.length;i++){
                 if($scope.events[i].type == 0){
@@ -82,67 +84,71 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
                     $scope.events[i].color = "red"
                 }
             }
-            console.log("所有员工:"+JSON.stringify($scope.events));
-        }).catch(function (result) { //捕捉错误处理
+        }).catch(function (result) {
         });
     };
     function headOfficeView() {
         $http.post("/camel/api/getHeadOfficeList",{
         }).then(function (result){
             angular.copy(result.data, $scope.events)
-            console.log("所有:"+JSON.stringify($scope.events));
         }).catch(function (result){
 
             alert("-------------fail----------");
         });
     };
 
+    //Click on the date
     // 点击日期
     $scope.eventOne = function (date, allDay, jsEvent, view) {
         $rootScope._date = date._i;
-        if($rootScope.rid == 2){ // 领导
+        if($rootScope.rid == 2){
             manager.allEventOnes(date, allDay, jsEvent, view,$scope.branchId);
-            manager.getStaff(); // 查询员工
-        }else if ($rootScope.rid == 3){ // 总行
+            manager.getStaff(); // 查询员工   Query staff
+        }else if ($rootScope.rid == 3){
             branchTemplate.branchEventOne(date, allDay, jsEvent, view,$scope.branchId);
-        }else{ //员工
+        }else{
             modalsss.eventOnes(date, allDay, jsEvent, view,$scope.userId,$scope.branchId);
         }
     }
 
+    //Delete the schedule
     // 删除日程
     $scope.deleteProj = function (indexs) {
-        if($rootScope.rid == 2){ // 领导
+        if($rootScope.rid == 2){
             manager.mDeleteSchedule(indexs);
-        }else if ($rootScope.rid == 3){ // 总行
+        }else if ($rootScope.rid == 3){
             branchTemplate.deleteTemplateRowInfo(indexs);
-        }else{ //员工
+        }else{
             modalsss.deleteProjs(indexs);
         }
     }
 
+    //Add the schedule
     // 添加日程
     $scope.addSchedule = function () {
-        if($rootScope.rid == 2){ // 领导
+        if($rootScope.rid == 2){
             manager.mAddSchedule($scope.branchId);
-        }else if ($rootScope.rid == 3){ // 总行
+        }else if ($rootScope.rid == 3){
             branchTemplate.branchAdd($scope.branchId);
-        }else{ //员工
+        }else{
             modalsss.addSchedules($scope.userId,$scope.branchId);
         }
     };
 
+    //Save window replacement data
     // 保存窗口替换数据
     $scope.saveTemplate = function (event) {
-        if($rootScope.rid == 2){ // 领导
+        if($rootScope.rid == 2){
             manager.mSaveSchedul();
-        }else if ($rootScope.rid == 3){ // 总行
+        }else if ($rootScope.rid == 3){
             branchEditTemplate.saveBranchTaskInfo($scope.rowId);
-        }else{ //员工
+        }else{
             modalsss.updateMss($scope.userId);
         }
         window.location.reload();
     };
+
+    //Drag and drop functionality
     // 拖拽功能
     $scope.endDragStip = function (event, delta, revertFunc, jsEvent, ui, view) {
         console.log(event)
@@ -154,8 +160,8 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
         var param = {id:event.id,timeStamp:timeStamp,timeDay:allToDay};
         $http.post("/camel/api/dragAndDrop",param,{
-        }).then(function (result) {  //正确请求成功时处理
-        }).catch(function (result) { //捕捉错误处理
+        }).then(function (result) {
+        }).catch(function (result) {
         });
     },
 
@@ -174,14 +180,15 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     //     return -1;
     // }
 
+    //Close the window to delete modified data
     //关闭窗口删除修改数据
     $scope.closeTemplate = function () {
 
-        if($rootScope.rid == 2){ // 领导
+        if($rootScope.rid == 2){
             manager.mCloseSchedul()
-        }else if ($rootScope.rid == 3){ // 总行
+        }else if ($rootScope.rid == 3){
             branchTemplate.closeBranchTemplate();
-        }else{ //员工
+        }else{
             modalsss.deleteMSs();
         }
     };
@@ -295,7 +302,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             eventRender: $scope.eventRenders,
             dayClick: $scope.eventOne,
             loading:$scope.jurisdiction,
-            eventDrop:$scope.endDragStip //拖拽功能
+            eventDrop:$scope.endDragStip 
             // eventMouseover:$scope.eventMou
             /* Mouseover*/
             /*eventMouseover: $scope.eventMouseover*/
