@@ -23,10 +23,10 @@
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
-                        <td><input type="text" style="width:200px;height:35px" ng-model="e.title"/></td>
-                        <td><input type="text" style="width:200px;height:35px" ng-model="e.message"/></td>
+                        <td><input type="text" ng-disabled="e.type == 0? true:false" style="width:200px;height:35px" ng-model="e.title"/></td>
+                        <td><input type="text" ng-disabled="e.type == 0? true:false" style="width:200px;height:35px" ng-model="e.message"/></td>
                         <td>
-                                <input class="form-control" placeholder="{{e.dateTime}}"
+                                <input ng-disabled="e.type == 0? true:false" class="form-control" placeholder="{{e.dateTime}}"
                                        moment-picker="ctrl.timepicker"
                                        ng-model="e.dateTime"
                                        format="HH:mm:ss"
@@ -34,7 +34,7 @@
                                       show-header="false">
                         </td>
                         <td>
-                            <input class="form-control" placeholder="{{e.endTime}}"
+                            <input ng-disabled="e.type == 0? true:false" class="form-control" placeholder="{{e.endTime}}"
                                    moment-picker="ctrl1.timepicker"
                                    ng-model="e.endTime"
                                    format="HH:mm:ss"
@@ -42,7 +42,7 @@
                                    show-header="false">
                         </td>
                         <td>
-                            <select ng-model="e.type" >
+                            <select ng-disabled="e.type == 0? true:false" ng-model="e.type" >
                                 <option ng-repeat="item in sites" ng-value="item.val">{{item.site}}</option>
                             </select>
                         </td>
