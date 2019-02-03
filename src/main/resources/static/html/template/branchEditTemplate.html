@@ -20,19 +20,19 @@
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
-                        <td style="height: 30px">
-                            <select ng-model="e.rowId" >
-                                <option ng-repeat="x in branchList" ng-value="x.id">{{x.userName}}</option>
+                        <td style="width:200px;height:35px">
+                            <select ng-model="e.rowId" style="width:200px;height:35px" >
+                                <option ng-repeat="x in branchList" ng-value="x.id" >{{x.userName}}</option>
                             </select>
                         </td>
-                        <td><input type="text" style="height: 42px; width: 220px" ng-model="e.title"/></td>
-                        <td><input type="text" style="height: 42px; width: 220px" ng-model="e.message"/></td>
+                        <td><input type="text" style="width:200px;height:35px" ng-model="e.title"/></td>
+                        <td><input type="text" style="width:200px;height:35px" ng-model="e.message"/></td>
                         <td style="height: 30px">
                             <input class="form-control"
                                    format="YYYY-MM-DD"
                                    ng-model="e.startTime"
                                    moment-picker="ctrl.datepicker"
-                                   ng-model-options="{ updateOn: 'blur' }" style="height: 30px">
+                                   ng-model-options="{ updateOn: 'blur' }" style="width:200px;height:35px">
                         </td>
                         <td style="height: 30px">
                             <input class="form-control"
@@ -40,7 +40,7 @@
                                    ng-model="e.endTime"
                                    moment-picker="ctrl1.datepicker"
                                    ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false" style="height: 30px"/>
+                                   show-header="false" style="width:200px;height:35px"/>
                         </td>
                         <td style="height: 30px"><button type="button" style="height: 30px" class="btn btn-primary" ng-click="delItem($index)">删除</button></td>
                         <td><input type="text" ng-model="e.id" style="display: none" /></td>

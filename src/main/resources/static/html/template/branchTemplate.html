@@ -24,12 +24,12 @@
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
-                        <td><input type="text" ng-model="e.NAME"  disabled="disabled"/></td>
-                        <td><input type="text" ng-model="e.LEVEL"  disabled="disabled"/></td>
-                        <td><input type="text" ng-model="e.finish"  disabled="disabled"/></td>
-                        <td><input type="text" ng-model="e.unfinished"  disabled="disabled"/></td>
-                        <td><input type="text" ng-model="e.fail"  disabled="disabled"/></td>
-                        <td><input type="text" ng-model="e.total"  disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.NAME" style="width:200px;height:35px" disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.LEVEL" style="width:200px;height:35px"  disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.finish"  style="width:200px;height:35px" disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.unfinished" style="width:200px;height:35px" disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.fail" style="width:200px;height:35px" disabled="disabled"/></td>
+                        <td><input type="text" ng-model="e.total" style="width:200px;height:35px" disabled="disabled"/></td>
                         <td><button type="button" class="btn btn-primary" ng-click="branchScheduleInfo($index)">▼</button></td>
                         <td><input type="text" ng-model="e.id" style="display: none" /></td>
 
@@ -46,15 +46,15 @@
                         </tr>
                     <tr ng-repeat="x in branchStaffList" >
                     <td></td>
-                    <td><input type="text" ng-model="x.userName" disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.title" disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.body" disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.startTime"  disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.endTime" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.userName" style="width:200px;height:35px" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.title" style="width:200px;height:35px" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.body" style="width:200px;height:35px" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.startTime" style="width:200px;height:35px"  disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.endTime" style="width:200px;height:35px" disabled="disabled"/></td>
                     <td>
-                        <input type="text" ng-if="x.TYPE==0" value="complete" disabled="disabled"/>
-                        <input type="text" ng-if="x.TYPE==1" value="failed" disabled="disabled"/>
-                        <input type="text" ng-if="x.TYPE==2" value="uncomplete" disabled="disabled"/>
+                        <input type="text" ng-if="x.TYPE==0" style="width:200px;height:35px" value="complete" disabled="disabled"/>
+                        <input type="text" ng-if="x.TYPE==1" style="width:200px;height:35px" value="failed" disabled="disabled"/>
+                        <input type="text" ng-if="x.TYPE==2" style="width:200px;height:35px" value="uncomplete" disabled="disabled"/>
                     </td>
                     <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">╳</button></td>
                 </tr>
