@@ -65,7 +65,10 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
             $('#managerModal').modal('hide');
         },
         deleteTemplateRowInfo: function (indexs) {
-            console.log();
+            console.log()
+            if($rootScope.schedule[indexs] != '') {
+                $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
+            }
             $rootScope.schedule.splice(indexs,1);
         },
         //点击add Item button 弹窗
