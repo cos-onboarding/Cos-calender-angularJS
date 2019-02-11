@@ -202,11 +202,11 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }else{
             console.log((new Date(end).getFullYear()) + " -"+(new Date(end).getMonth()))
         }
-        var s = new Date(start).getTime() / 1000;
-        var e = new Date(end).getTime() / 1000;
-        var m = new Date(start).getMonth();
-        var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-        callback(events)
+        // var s = new Date(start).getTime() / 1000;
+        // var e = new Date(end).getTime() / 1000;
+        // var m = new Date(start).getMonth();
+        // var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
+        callback($scope.events)
     };;
 
     $scope.calEventsExt = {

@@ -3,17 +3,21 @@
         <div>
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">
-                    备忘录日程
+                    Schedule Details
                 </h4>
-                <button type="button" class="close" ng-click="closeTemplate()">
-                    &times;
-                </button>
-                <button class="btn btn-primary" ng-click="addSchedule()">分配日程</button>
+                <h4>
+                    EverydaySchedule：30
+                </h4>
+                <!--<button type="button" class="close" ng-click="closeTemplate()">-->
+                    <!--&times;-->
+                <!--</button>-->
+                <button class="btn btn-primary" ng-click="addSchedule()">Distribution Schedule</button>
             </div>
             <div class="modal-body">
-                <table style="width: 100%">
+                <table style="display:inline-block">
                     <tr>
                         <td>序号</td>
+                        <td>数量</td>
                         <td>员工</td>
                         <td>业务类型</td>
                         <td>内容</td>
@@ -24,6 +28,7 @@
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
+                        <td>10</td>
                         <td>
                             <select ng-disabled="e.type == 0? true:false" ng-model="e.userId" style="width:200px;height:35px">
                                 <option ng-repeat="x in staffList" ng-value="x.id">{{x.userName}}</option>
@@ -52,14 +57,14 @@
                                 <option ng-repeat="item in sites" ng-value="item.val">{{item.site}}</option>
                             </select>
                         </td>
-                        <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">删除</button></td>
+                        <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">Delete</button></td>
                     </tr>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="closeTemplate()">关闭
+                <button type="button" class="btn btn-primary" ng-click="closeTemplate()">Close
                 </button>
-                <button type="button" class="btn btn-primary" ng-click="saveTemplate()">保存
+                <button type="button" class="btn btn-primary" ng-click="saveTemplate()">Save
                 </button>
             </div>
         </div><!-- /.modal -->
