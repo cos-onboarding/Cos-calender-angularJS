@@ -26,7 +26,7 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
             }
             $rootScope.schedule.push(ms);
         },
-        //删除分配日程
+        //Commit the save task and delete the current display
         branchEditDelRow: function (indexs) {
             debugger;
             var param = {
@@ -34,7 +34,7 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
                 endTime: $rootScope.schedule[indexs].endTime,
                 itemId: $rootScope.schedule[indexs].itemId,
                 phone: $rootScope.schedule[indexs].phone,
-                startTime: $rootScope.schedule[indexs].startTime,
+                startTime: new Date($rootScope.schedule[indexs].startTime._d).toISOString().slice(0,10),
                 title: $rootScope.schedule[indexs].title
             };
             $http.post("/camel/api/updateDistributeTask", param, {}).then(function (result) {  //正确请求成功时处理
