@@ -175,12 +175,13 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             $rootScope.dayCount.everyDay = $rootScope.timeStamp;
             $rootScope.dayCount.type = type;
             $rootScope.dayCount.userId = $scope.userId;
-            // everyDay:$rootScope.timeStamp,
-            //     type:type,
-            //     userId:$scope.userId
         }
-        console.log($rootScope.dayCount);
-        $rootScope.isJudge = true;
+        $http.post("/camel/api/saveTaskQuantity",$rootScope.dayCount,{
+        }).then(function (result) {
+            everyDayCount($scope.userId,$rootScope.timeStamp,type)
+            $rootScope.isJudge = true;
+        }).catch(function (result) {
+        });
     }
 
     // 编辑任务量

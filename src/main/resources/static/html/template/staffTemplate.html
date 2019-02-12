@@ -10,7 +10,7 @@
                     <button class="btn btn-primary" ng-click="saveCount(dayCount.id,1)" ng-show="!isJudge">保存</button>
                     <button class="btn btn-primary" ng-click="updateCount()" ng-show="isJudge">编辑</button>
                 </h4>
-                <button class="btn btn-primary" ng-click="addSchedule()">Add Schedule</button>
+                <button class="btn btn-primary" ng-click="addSchedule()" ng-if = "schedule.length < dayCount.maxCount">Add Schedule</button>
             </div>
             <div class="modal-body">
                 <table style="width: 100%">

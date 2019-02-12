@@ -78,6 +78,8 @@ public class CamelRoute extends RouteBuilder {
 	@Value("${deleteSchdule.url}")
 	private String deleteSchduleUrl;
 
+	@Value("${saveTaskQuantity.url}")
+	private String saveTaskQuantityUrl;
 	
 	@Override
 	public void configure() throws Exception {
@@ -97,6 +99,13 @@ public class CamelRoute extends RouteBuilder {
 				.post("/everyDayCount")
 				.to("direct:everyDayCountService");
 		from("direct:everyDayCountService").process(new CalendarProcessor()).to(everyDayCountUrl);
+
+		rest("/api/")
+				.id("saveTaskQuantity-route")
+				.consumes("application/json")
+				.post("/saveTaskQuantity")
+				.to("direct:saveTaskQuantityService");
+		from("direct:saveTaskQuantityService").process(new CalendarProcessor()).to(saveTaskQuantityUrl);
 
 		rest("/api/")
 				.id("deleteSchdule-route")
