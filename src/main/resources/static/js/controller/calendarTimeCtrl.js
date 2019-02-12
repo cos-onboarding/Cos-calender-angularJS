@@ -241,13 +241,15 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     //关闭窗口删除修改数据
     $scope.closeTemplate = function () {
         if($rootScope.rid == 2){
-            manager.mCloseSchedul()
+            manager.mCloseSchedul();
+            window.location.reload();
         }else if ($rootScope.rid == 3){
             branchTemplate.closeBranchTemplate();
         }else{
             modalsss.deleteMs();
+            window.location.reload();
         }
-        window.location.reload();
+
     };
 
     // 关闭详情窗口

@@ -17,19 +17,38 @@
                                 <div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
                                     <h4>{{alertMessage}}</h4>
                                 </div>
-                                <div class="btn-toolbar">
-                                    <div class="btn-group" style="display:inline-block;float:right;">
+                                <div class="btn-toolbar" ng-if="rid == 3">
+                                    <div class="btn-group" style="display:inline-block;float:right;" >
                                         <span style="width:50px; height:30px;background-color:yellow;font-size: 15px !important;text-align: center;">
-                                            uncompleted
-                                        </span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span style="width:50px; height:30px;background-color:green;font-size: 15px !important;text-align: center;">
-                                            Completed
-                                        </span>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span style="width:50px; height:30px;background-color:red;font-size: 15px !important;text-align: center;">
-                                            Fail
-                                        </span>
+                                            Sheung wan branch (SWB)
+                                        </span><br>
+                                        <span style="width:50px; height:30px;background-color:OrangeRed;font-size: 15px !important;text-align: center;">
+                                            Central Branch (CB)
+                                        </span><br>
+                                        <span style="width:50px; height:30px;background-color:LightSkyBlue;font-size: 15px !important;text-align: center;">
+                                            Tsim Sha Tsui Branch (TSTB)
+                                        </span><br>
+                                        <span style="width:50px; height:30px;background-color:AntiqueWhite;font-size: 15px !important;text-align: center;">
+                                            Shatin Branch (STB)
+                                        </span><br>
+                                        <span style="width:50px; height:30px;background-color:Chartreuse;font-size: 15px !important;text-align: center;">
+                                            Nathan Road Branch (NAB)
+                                        </span><br>
                                     </div>
                                 </div>
+                                <div class="btn-toolbar" ng-if="rid != 3">
+                                <div class="btn-group" style="display:inline-block;float:right;" >
+                                        <span style="width:50px; height:30px;background-color:yellow;font-size: 15px !important;text-align: center;">
+                                            uncompleted
+                                        </span><br>
+                                    <span style="width:50px; height:30px;background-color:green;font-size: 15px !important;text-align: center;">
+                                            Completed
+                                        </span><br>
+                                    <span style="width:50px; height:30px;background-color:red;font-size: 15px !important;text-align: center;">
+                                            Fail
+                                        </span><br>
+                                </div>
+                             </div>
                                 <div><button class="btn btn-primary" ng-click="addBranchEditTemplate()" ng-if="rid==3">Add Item</button></div>
                                 <div id="content" class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
                             </tab>
