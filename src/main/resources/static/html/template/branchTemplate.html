@@ -3,7 +3,7 @@
         <div>
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">
-                    分行日程
+                    Detailed View
                 </h4>
                 <button type="button" class="close" ng-click="closeTemplate()" style="width: auto">
                     &times;
@@ -35,28 +35,28 @@
 
                     <table style="width: 80%" ng-show="isShow">
                         <tr>
-                            <td>    </td>
-                            <td>人员名称</td>
-                            <td>标题</td>
-                            <td>内容</td>
-                            <td>开始时间</td>
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td>staff name</td>
+                            <td>title</td>
+                            <td>body</td>
+                            <td>phone</td>
+                            <td>预约时间</td>
                             <td>结束时间</td>
                             <td>状态</td>
-                            <td>操作</td>
                         </tr>
                     <tr ng-repeat="x in branchStaffList" >
-                    <td></td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                     <td><input type="text" ng-model="x.userName" style="width:200px;height:35px" disabled="disabled"/></td>
                     <td><input type="text" ng-model="x.title" style="width:200px;height:35px" disabled="disabled"/></td>
                     <td><input type="text" ng-model="x.body" style="width:200px;height:35px" disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.startTime" style="width:200px;height:35px"  disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.phone" style="width:200px;height:35px" disabled="disabled"/></td>
+                    <td><input ng-model="x.startTime" style="width:200px;height:35px"  disabled="disabled"/></td>
                     <td><input type="text" ng-model="x.endTime" style="width:200px;height:35px" disabled="disabled"/></td>
                     <td>
                         <input type="text" ng-if="x.TYPE==0" style="width:200px;height:35px" value="complete" disabled="disabled"/>
-                        <input type="text" ng-if="x.TYPE==1" style="width:200px;height:35px" value="failed" disabled="disabled"/>
+                        <input type="text" ng-if="x.TYPE==1" style="width:200px;height:35px" value="fail" disabled="disabled"/>
                         <input type="text" ng-if="x.TYPE==2" style="width:200px;height:35px" value="uncomplete" disabled="disabled"/>
                     </td>
-                    <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">╳</button></td>
                 </tr>
                 </table>
                  </tr>
@@ -65,8 +65,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="closeTemplate()">关闭
                 </button>
-                <!--<button type="button" class="btn btn-primary" ng-click="saveTemplate()">保存-->
-                <!--</button>-->
+
             </div>
         </div><!-- /.modal -->
     </div>

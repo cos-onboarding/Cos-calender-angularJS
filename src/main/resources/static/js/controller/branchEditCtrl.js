@@ -28,9 +28,21 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
         },
         //删除分配日程
         branchEditDelRow: function (indexs) {
-            if(indexs>=0) {
-                $rootScope.schedule.splice(indexs, 1);
-            }
+            debugger;
+            var param = {
+                body: $rootScope.schedule[indexs].body,
+                endTime: $rootScope.schedule[indexs].endTime,
+                itemId: $rootScope.schedule[indexs].itemId,
+                phone: $rootScope.schedule[indexs].phone,
+                startTime: $rootScope.schedule[indexs].startTime,
+                title: $rootScope.schedule[indexs].title
+            };
+            $http.post("/camel/api/updateDistributeTask", param, {}).then(function (result) {  //正确请求成功时处理
+                if(indexs>=0) {
+                    $rootScope.schedule.splice(indexs, 1);
+                }
+            }).catch(function (result) { //捕捉错误处理
+            });
         },
 
         //关闭Template
@@ -71,8 +83,20 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
             }
             $rootScope.schedule.splice(indexs,1);
         },
+       /* //点击add Item button 弹窗
+        branchEidtAddTemplate: function () {
+
+            $('#branchEditModalLabel').modal('show');
+        },*/
         //点击add Item button 弹窗
         branchEidtAddTemplate: function () {
+            $http.post("/camel/api/getDistributeTaskList", {}).then(function (result) {  //正确请求成功时处理
+                if (result.data.length != 0) {
+                    $rootScope.schedule = result.data;
+                    console.log(JSON.stringify($rootScope.schedule));
+                }
+            }).catch(function (result) { //捕捉错误处理
+            });
             $('#branchEditModalLabel').modal('show');
         },
     }

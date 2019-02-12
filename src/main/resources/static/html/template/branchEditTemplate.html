@@ -3,30 +3,25 @@
         <div>
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">
-                    分行日程
+                    Distribution Schedule
                 </h4>
-                <button class="btn btn-primary" ng-click="addBranchSchedule()">分配日程</button>
+                <!--<button class="btn btn-primary" ng-click="addBranchSchedule()">Add</button>-->
             </div>
             <div class="modal-body">
                 <table style="width: 100%">
                     <tr>
-                        <td>序号</td>
-                        <td>分行名称</td>
-                        <td>标题</td>
-                        <td>内容</td>
-                        <td>开始时间</td>
-                        <td>结束时间</td>
+                        <td>title</td>
+                        <td>body</td>
+                        <td>phone</td>
+                        <td>预约时间</td>
+                        <td>branch name</td>
                         <td>操作</td>
                     </tr>
                     <tr ng-repeat="e in schedule">
-                        <td>{{$index + 1}}</td>
-                        <td style="width:200px;height:35px">
-                            <select ng-model="e.rowId" style="width:200px;height:35px" >
-                                <option ng-repeat="x in branchList" ng-value="x.id" >{{x.userName}}</option>
-                            </select>
-                        </td>
+                        <td style="display: none">{{$index + 1}}</td>
                         <td><input type="text" style="width:200px;height:35px" ng-model="e.title"/></td>
-                        <td><input type="text" style="width:200px;height:35px" ng-model="e.message"/></td>
+                        <td><input type="text" style="width:200px;height:35px" ng-model="e.body"/></td>
+                        <td><input type="text" style="width:200px;height:35px" ng-model="e.phone"/></td>
                         <td style="height: 30px">
                             <input class="form-control"
                                    format="YYYY-MM-DD"
@@ -34,16 +29,13 @@
                                    moment-picker="ctrl.datepicker"
                                    ng-model-options="{ updateOn: 'blur' }" style="width:200px;height:35px">
                         </td>
-                        <td style="height: 30px">
-                            <input class="form-control"
-                                   format="YYYY-MM-DD"
-                                   ng-model="e.endTime"
-                                   moment-picker="ctrl1.datepicker"
-                                   ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false" style="width:200px;height:35px"/>
+                        <td style="width:200px;height:35px">
+                            <select ng-model="e.rowId" style="width:200px;height:35px" >
+                                <option ng-repeat="x in branchList" ng-value="x.id" >{{x.userName}}</option>
+                            </select>
                         </td>
-                        <td style="height: 30px"><button type="button" style="height: 30px" class="btn btn-primary" ng-click="delItem($index)">删除</button></td>
-                        <td><input type="text" ng-model="e.id" style="display: none" /></td>
+                        <td style="height: 30px"><button type="button" style="height: 30px" class="btn btn-primary" ng-click="submitUpdate($index)">submit</button></td>
+                        <td><input type="text" ng-model="e.itemId" style="display: none" /></td>
                     </tr>
                 </table>
             </div>

@@ -90,10 +90,10 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     function headOfficeView() {
         $http.post("/camel/api/getHeadOfficeList",{
         }).then(function (result){
-            angular.copy(result.data, $scope.events)
-        }).catch(function (result){
 
-            alert("-------------fail----------");
+            angular.copy(result.data, $scope.events)
+            console.log(result.data);
+        }).catch(function (result){
         });
     };
 
@@ -271,7 +271,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     $scope.closeEditTemplate = function() {
         branchEditTemplate.closeBranchEditTemplate();
     };
-    $scope.delItem = function(indexs){
+    $scope.submitUpdate = function(indexs){
         branchEditTemplate.branchEditDelRow(indexs);
     };
     $scope.addBranchSchedule = function () {
@@ -282,6 +282,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     $scope.uiConfig = {
         calendar:{
             height: 450,
+            width: 800,
             editable: false,
             stick: true,
             fixedWeekCount: false,

@@ -43,13 +43,7 @@ app.service('branchTemplate',function ($rootScope,$http) {
             }
             $rootScope.schedule.push(ms);
         },
-        // 删除分配日程
-        // mDeleteSchedule:function (indexs) {
-        //     if($rootScope.schedule[indexs].id != 0){
-        //         $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
-        //     }
-        //     $rootScope.schedule.splice(indexs,1);
-        // },
+
         //关闭Template
         closeBranchTemplate: function () {
             $('#branchModalLabel').modal('hide');
@@ -88,7 +82,7 @@ app.service('branchTemplate',function ($rootScope,$http) {
                 $rootScope.isShow = !$rootScope.isShow;
             }
         },
-        //获取当天公司下的所有人员预约信息
+        //Gets all tasks for the next day for that branch
         getBranchScheduleInfo: function (indexs, date) {
             var params = {id: $rootScope.schedule[indexs].id, time: date};
             $http.post("/camel/api/dayBranchStaffInfo", params, {}).then(function (result){

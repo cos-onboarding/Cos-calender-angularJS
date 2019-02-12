@@ -65,6 +65,12 @@ public class CamelRoute extends RouteBuilder {
 
 	@Value("${calender.save.branch.url}")
 	private String saveBranchCalendarUrl;
+
+	@Value("${calender.distribute.task.url}")
+	private String getDistributeTaskListUrl;
+
+	@Value("${calender.update.distribute.url}")
+	private String updateDistributeTaskUrl;
 	
 	@Override
 	public void configure() throws Exception {
@@ -175,6 +181,20 @@ public class CamelRoute extends RouteBuilder {
 				.post("/saveBranchCalendar")
 				.to("direct:saveBranchCalendarService");
 		from("direct:saveBranchCalendarService").process(new CalendarProcessor()).to(saveBranchCalendarUrl);
+
+		rest("/api/")
+				.id("daySchedule-route")
+				.consumes("application/json")
+				.post("/updateDistributeTask")
+				.to("direct:updateDistributeTaskService");
+		from("direct:updateDistributeTaskService").process(new CalendarProcessor()).to(updateDistributeTaskUrl);
+
+		rest("/api/")
+				.id("daySchedule-route")
+				.consumes("application/json")
+				.post("/getDistributeTaskList")
+				.to("direct:getDistributeTaskListService");
+		from("direct:getDistributeTaskListService").process(new CalendarProcessor()).to(getDistributeTaskListUrl);
 		
 		rest("/api/")
 		  .id("usrcheck-route")
