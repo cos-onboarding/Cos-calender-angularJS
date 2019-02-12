@@ -1,16 +1,15 @@
 <div>
-    <div class="modal" style="height:50%;width:80%; margin:0 auto; botton: auto" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal" style="height:50%;width:100%; margin:0 auto; botton: auto" id="listModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div>
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">
                     Schedule Details
                 </h4>
                 <h4>
-                    EverydaySchedule：10
+                    EverydaySchedule：<input style="width: 20%" type="text" ng-model="dayCount.maxCount" ng-disabled="isJudge"/>
+                    <button class="btn btn-primary" ng-click="saveCount(dayCount.id,1)" ng-show="!isJudge">保存</button>
+                    <button class="btn btn-primary" ng-click="updateCount()" ng-show="isJudge">编辑</button>
                 </h4>
-                <!--<button type="button" class="close" ng-click="closeTemplate()">-->
-                    <!--&times;-->
-                <!--</button>-->
                 <button class="btn btn-primary" ng-click="addSchedule()">Add Schedule</button>
             </div>
             <div class="modal-body">
@@ -26,42 +25,57 @@
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
-                        <td><input type="text" ng-disabled="e.type == 0? true:false" style="width:200px;height:35px" ng-model="e.title"/></td>
-                        <td><input type="text" ng-disabled="e.type == 0? true:false" style="width:200px;height:35px" ng-model="e.message"/></td>
-                        <td>
-                                <input ng-disabled="e.type == 0? true:false" class="form-control" placeholder="{{e.dateTime}}"
-                                       moment-picker="ctrl.timepicker"
-                                       ng-model="e.dateTime"
-                                       format="HH:mm:ss"
-                                      ng-model-options="{ updateOn: 'blur' }"
-                                      show-header="false">
+                        <td>{{e.title}}</td>
+                        <td>{{e.message}}</td>
+                        <td>{{e.dateTime}}</td>
+                        <td>{{e.endTime}}</td>
+                        <td><span ng-if="e.type == 0">Completed</span>
+                            <span ng-if="e.type == 1">uncompleted</span>
+                            <span ng-if="e.type == 2">Fail</span>
                         </td>
                         <td>
-                            <input ng-disabled="e.type == 0? true:false" class="form-control" placeholder="{{e.endTime}}"
-                                   moment-picker="ctrl1.timepicker"
-                                   ng-model="e.endTime"
-                                   format="HH:mm:ss"
-                                   ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false">
-                        </td>
-                        <td>
-                            <select ng-disabled="e.type == 0? true:false" ng-model="e.type" >
-                                <option ng-repeat="item in sites" ng-value="item.val">{{item.site}}</option>
-                            </select>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary" ng-click="deleteProj($index)">Delete</button>
+                            <button class="btn btn-primary" ng-click="deleteProj($index,e.id)">Delete</button>
+                            <button class="btn btn-primary" ng-click="seeProj($index)">See</button>
                         </td>
                     </tr>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="closeTemplate()">Close
-                </button>
-                <button type="button" class="btn btn-primary" ng-click="saveTemplate()">Save
-                </button>
+                <button type="button" class="btn btn-primary" ng-click="closeTemplate()">Close</button>
             </div>
         </div><!-- /.modal -->
+    </div>
+    <div class="modal" style="height:50%;width:80%; margin:0 auto; botton: auto" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div>
+            <div class="modal-body">
+                        业务类型：<input type="text" style="width:200px;height:35px" ng-model="singleEntity.title"/>
+                        内容：<input type="text" style="width:200px;height:35px" ng-model="singleEntity.message"/>
+                        开始时间：
+                            <input class="form-control" placeholder="{{singleEntity.dateTime}}"
+                                   moment-picker="ctrl.timepicker"
+                                   ng-model="singleEntity.dateTime"
+                                   format="HH:mm:ss"
+                                   ng-model-options="{ updateOn: 'blur' }"
+                                   show-header="false">
+                       结束时间：
+                            <input class="form-control" placeholder="{{singleEntity.endTime}}"
+                                   moment-picker="ctrl1.timepicker"
+                                   ng-model="singleEntity.endTime"
+                                   format="HH:mm:ss"
+                                   ng-model-options="{ updateOn: 'blur' }"
+                                   show-header="false">
+                        状态：
+                        <select ng-model="singleEntity.type" >
+                            <option ng-repeat="item in sites" ng-value="item.val">{{item.site}}</option>
+                        </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="closeDetailsWindow()">关闭
+                </button>
+                <button type="button" class="btn btn-primary" ng-click="saveTemplate()">保存
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -65,6 +65,12 @@ public class CamelRoute extends RouteBuilder {
 
 	@Value("${calender.save.branch.url}")
 	private String saveBranchCalendarUrl;
+
+	@Value("${everyDayCount.url}")
+	private String everyDayCountUrl;
+
+	@Value("${deleteSchdule.url}")
+	private String deleteSchduleUrl;
 	
 	@Override
 	public void configure() throws Exception {
@@ -77,7 +83,21 @@ public class CamelRoute extends RouteBuilder {
 		  .apiProperty("api.version", "v1")
 		  .apiContextRouteId("doc-api")
 		  .component("servlet");
-		
+
+		rest("/api/")
+				.id("everyDayCount-route")
+				.consumes("application/json")
+				.post("/everyDayCount")
+				.to("direct:everyDayCountService");
+		from("direct:everyDayCountService").process(new CalendarProcessor()).to(everyDayCountUrl);
+
+		rest("/api/")
+				.id("deleteSchdule-route")
+				.consumes("application/json")
+				.post("/deleteSchdule")
+				.to("direct:deleteSchduleService");
+		from("direct:deleteSchduleService").process(new CalendarProcessor()).to(deleteSchduleUrl);
+
 		rest("/api/")
 		  .id("login-route")
 		  .consumes("application/json")

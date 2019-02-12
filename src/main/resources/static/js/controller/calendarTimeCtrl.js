@@ -1,5 +1,7 @@
 app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate,chServer,branchEditTemplate) {
     $rootScope.isLandingPage = false;
+    $rootScope.isJudge = false;
+    $rootScope.dayCount = {};
     $scope.selectIds=[];
     $rootScope.sites = [
         {site : "Completed", val : 0},
@@ -92,7 +94,6 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }).then(function (result){
             angular.copy(result.data, $scope.events)
         }).catch(function (result){
-
             alert("-------------fail----------");
         });
     };
@@ -107,19 +108,50 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }else if ($rootScope.rid == 3){
             branchTemplate.branchEventOne(date, allDay, jsEvent, view,$scope.branchId);
         }else{
-            modalsss.eventOnes(date, allDay, jsEvent, view,$scope.userId,$scope.branchId);
+            everyDayCount($scope.userId,date._i,1)
+            modalsss.eventOnes(date._i,$scope.userId,$scope.branchId);
         }
+    };
+    // 点击查找每日上报的任务量 人员ID  时间戳    人员类型
+    function everyDayCount (userId,timeStamp,type) {
+        var param = {userId:userId,timeStamp:timeStamp,type:type}
+        $http.post("/camel/api/everyDayCount",param,{
+        }).then(function (result) {
+            console.log(result.data[0]);
+            if(result.data[0] == undefined){
+                $rootScope.dayCount = {
+                    id:0,
+                    maxCount:0
+                }
+            }else{
+                $rootScope.isJudge = true;
+                $rootScope.dayCount = result.data[0];
+            }
+        }).catch(function (result) {
+        });
     }
 
     //Delete the schedule
     // 删除日程
-    $scope.deleteProj = function (indexs) {
+    $scope.deleteProj = function (indexs,id) {
         if($rootScope.rid == 2){
             manager.mDeleteSchedule(indexs);
         }else if ($rootScope.rid == 3){
             branchTemplate.deleteTemplateRowInfo(indexs);
         }else{
-            modalsss.deleteProjs(indexs);
+            modalsss.deleteProjs(id);
+            $timeout(function() {
+                modalsss.eventOnes($rootScope._date,$scope.userId,$scope.branchId);
+            }, 1000);
+        }
+    }
+
+    //查看单个日程
+    $scope.seeProj = function (index) {
+        if($rootScope.rid == 2){
+        }else if ($rootScope.rid == 3){
+        }else{
+            modalsss.seeOneProj(index);
         }
     }
 
@@ -131,9 +163,28 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }else if ($rootScope.rid == 3){
             branchTemplate.branchAdd($scope.branchId);
         }else{
-            modalsss.addSchedules($scope.userId,$scope.branchId);
+            modalsss.addSchedules($rootScope._date,$scope.userId,$scope.branchId);
         }
     };
+
+    // 保存任务量
+    $scope.saveCount = function (id,type) {
+        if(id == 0){
+            $rootScope.dayCount.everyDay = $rootScope.timeStamp;
+            $rootScope.dayCount.type = type;
+            $rootScope.dayCount.userId = $scope.userId;
+            // everyDay:$rootScope.timeStamp,
+            //     type:type,
+            //     userId:$scope.userId
+        }
+        console.log($rootScope.dayCount);
+        $rootScope.isJudge = true;
+    }
+
+    // 编辑任务量
+    $scope.updateCount = function () {
+        $rootScope.isJudge = false;
+    }
 
     //Save window replacement data
     // 保存窗口替换数据
@@ -143,9 +194,12 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }else if ($rootScope.rid == 3){
             branchEditTemplate.saveBranchTaskInfo($scope.rowId);
         }else{
-            modalsss.updateMss($scope.userId);
+            modalsss.updateMss();
+            $timeout(function() {
+                modalsss.eventOnes($rootScope._date,$scope.userId,$scope.branchId);
+            }, 1000);
         }
-        window.location.reload();
+        // window.location.reload();
     };
 
     //Drag and drop functionality
@@ -183,16 +237,27 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     //Close the window to delete modified data
     //关闭窗口删除修改数据
     $scope.closeTemplate = function () {
+        if($rootScope.rid == 2){
+            manager.mCloseSchedul()
+        }else if ($rootScope.rid == 3){
+            branchTemplate.closeBranchTemplate();
+        }else{
+            modalsss.deleteMs();
+        }
+        window.location.reload();
+    };
+
+    // 关闭详情窗口
+    $scope.closeDetailsWindow = function () {
 
         if($rootScope.rid == 2){
             manager.mCloseSchedul()
         }else if ($rootScope.rid == 3){
             branchTemplate.closeBranchTemplate();
         }else{
-            modalsss.deleteMSs();
+            modalsss.closeOneDetailsWindow();
         }
     };
-
 
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, timezone, callback) {
