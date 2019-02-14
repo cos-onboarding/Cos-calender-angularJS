@@ -1,11 +1,13 @@
 app.service('branchEditTemplate',function ($rootScope,$http) {
     $rootScope.branchList = [];
+    var indexReport;
+    $rootScope.newSchedule = [];
     return {
         //获取分行及经理名称
         getBranch: function () {
             $http.post("/camel/api/getAllBranch", {}).then(function (result) {  //正确请求成功时处理
                 $rootScope.branchList = result.data;
-                console.log("员工集合:" + JSON.stringify(result));
+                console.log("AllBranch:" + JSON.stringify($rootScope.branchList));
             }).catch(function (result) { //捕捉错误处理
                 console.info(result);
             });
@@ -28,53 +30,41 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
         },
         //Commit the save task and delete the current display
         branchEditDelRow: function (indexs) {
-            debugger;
-            var param = {
-                body: $rootScope.schedule[indexs].body,
-                endTime: $rootScope.schedule[indexs].endTime,
-                itemId: $rootScope.schedule[indexs].itemId,
-                phone: $rootScope.schedule[indexs].phone,
-                startTime: new Date($rootScope.schedule[indexs].startTime._d).toISOString().slice(0,10),
-                title: $rootScope.schedule[indexs].title
-            };
-            $http.post("/camel/api/updateDistributeTask", param, {}).then(function (result) {  //正确请求成功时处理
                 if(indexs>=0) {
+                    $rootScope.schedule[indexs].startTime = new Date($rootScope.schedule[indexs].startTime._d).toISOString().slice(0, 10) + " 00:00:00";
+                    $rootScope.schedule[indexs].branchId = $rootScope.schedule[indexs].rowId;
+                    $rootScope.newSchedule.push($rootScope.schedule[indexs]);
                     $rootScope.schedule.splice(indexs, 1);
                 }
-            }).catch(function (result) { //捕捉错误处理
-            });
+
         },
 
         //关闭Template
-        closeBranchEditTemplate:function () {
+        closeBranchEditTemplate : function () {
             $('#branchEditModalLabel').modal('hide');
-            $rootScope.schedule = [];
+            $rootScope.newSchedule = [];
         },
 
-        saveBranchTaskInfo:function() {
-                for (var i = 0; i < $rootScope.schedule.length; i++) {
-                    var startTime = new Date($rootScope.schedule[i].startTime._d).toISOString().slice(0,10);
-                    var endTime = new Date($rootScope.schedule[i].endTime._d).toISOString().slice(0,10);
-                    var times = Date.parse(new Date());
-                    $rootScope.schedule[i].startTime = startTime;
-                    $rootScope.schedule[i].endTime = endTime;
-                    $rootScope.schedule[i].infoId = new Date(new Date().toLocaleDateString()).getTime() + 8 * 60 * 60 * 1000;
-                    $rootScope.schedule[i].dateTime = new Date(times).toLocaleDateString().replace(/\//g, "-") + " " + new Date(times).toTimeString().substr(0, 8);
-                    console.log(times);
-                }
-                var newSchedule = $rootScope.schedule;
+        saveBranchTaskInfo : function() {
+            debugger;
+                /*for (var i = 0; i < $rootScope.schedule.length; i++) {
+                    if($rootScope.schedule[i].itemId!='') {
+                        var startTime = new Date($rootScope.schedule[i].startTime._d).toISOString().slice(0, 10) + " 00:00:00";
+                        $rootScope.schedule[i].startTime = startTime;
+                        $rootScope.newSchedule.push($rootScope.schedule);
+                    }
+                }*/
                 var param = {
-                    newSchedule: newSchedule
+                    newSchedule: $rootScope.newSchedule
                 }
             console.log(JSON.stringify(param))
             $http.post("/camel/api/saveBranchCalendar", param, {}).then(function (result) {  //正确请求成功时处理
                 window.location.reload();
-
+                $('#branchEditModalLabel').modal('hide');
             }).catch(function (result) { //捕捉错误处理
                 console.info(result);
             });
-            $rootScope.scheduleDel = [];
-            $('#managerModal').modal('hide');
+
         },
         deleteTemplateRowInfo: function (indexs) {
             console.log()
@@ -91,6 +81,7 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
         //点击add Item button 弹窗
         branchEidtAddTemplate: function () {
             $http.post("/camel/api/getDistributeTaskList", {}).then(function (result) {  //正确请求成功时处理
+                debugger;
                 if (result.data.length != 0) {
                     $rootScope.schedule = result.data;
                     console.log(JSON.stringify($rootScope.schedule));
@@ -99,5 +90,75 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
             });
             $('#branchEditModalLabel').modal('show');
         },
+
+        editPitchOnButton: function (BranchId) {
+            debugger;
+            if(BranchId != ''){
+                if(indexReport != undefined){
+                    $rootScope.branchList[indexReport].reportNum++;
+                }
+                for(var i=0; i < $rootScope.branchList.length; i++){
+                    if(BranchId == $rootScope.branchList[i].branchId) {
+                        if($rootScope.branchList[i].reportNum>0){
+                            $rootScope.branchList[i].reportNum--;
+                            indexReport = i;
+                            break;
+                        }else{
+                            alert("The biggest limit");
+                        }
+                    }
+                }
+            }
+        },
+        
+        /*editPitchOnButton: function (rowId) {
+            for(var i=0; $rootScope.branchList.length > i; i++){
+                if(rowId == $rootScope.branchList[i].id){
+                    var index = i;
+                }
+            }
+            console.log();
+            var reportNum;
+            if (rowId!='') {
+                switch (rowId) {
+                    case 1:
+                        if($rootScope.branchReportList[0].CentralBranch>0) {
+                        $rootScope.branchReportList[0].CentralBranch--;
+                        break;
+                        }else{
+                            $rootScope.branchList[0].splice(index,1);
+                        }
+                    case 2:
+                        if($rootScope.branchReportList[0].NathanRoadBranch>0) {
+                            $rootScope.branchReportList[0].NathanRoadBranch--;
+                            break;
+                        }else{
+                            $rootScope.branchList[0].splice(index,1);
+                        }
+                    case 3:
+                        if($rootScope.branchReportList[0].TsimShaTsuiBranch>0) {
+                            $rootScope.branchReportList[0].TsimShaTsuiBranch--;
+                            break;
+                        }else{
+                            $rootScope.branchList[0].splice(index,1);
+                        }
+                    case 4:
+                        if($rootScope.branchReportList[0].ShatinBranch>0) {
+                            $rootScope.branchReportList[0].ShatinBranch--;
+                            break;
+                        }else{
+                            $rootScope.branchList[0].splice(index,1);
+                        }
+                    case 5:
+                        if($rootScope.branchReportList[0].Sheungwanbranch>0) {
+                            $rootScope.branchReportList[0].Sheungwanbranch--;
+                            break;
+                        }else{
+                            $rootScope.branchList[0].splice(index,1);
+                        }
+                }
+            }
+            oldRowId = rowId;
+        },*/
     }
 });

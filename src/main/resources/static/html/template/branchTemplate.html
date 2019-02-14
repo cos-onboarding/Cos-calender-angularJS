@@ -13,14 +13,14 @@
             <div class="modal-body">
                 <table style="width: 100%">
                     <tr>
-                        <td>序号</td>
-                        <td>分行名称</td>
-                        <td>分行级别</td>
-                        <td>完成</td>
-                        <td>未完成</td>
-                        <td>失败</td>
-                        <td>合计</td>
-                        <td>操作</td>
+                        <td>No.</td>
+                        <td>branch name</td>
+                        <td>level</td>
+                        <td>In progress</td>
+                        <td>complete</td>
+                        <td>fail</td>
+                        <td>total</td>
+                        <td>action</td>
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
@@ -30,7 +30,7 @@
                         <td><input type="text" ng-model="e.unfinished" style="width:200px;height:35px" disabled="disabled"/></td>
                         <td><input type="text" ng-model="e.fail" style="width:200px;height:35px" disabled="disabled"/></td>
                         <td><input type="text" ng-model="e.total" style="width:200px;height:35px" disabled="disabled"/></td>
-                        <td><button type="button" class="btn btn-primary" ng-click="branchScheduleInfo($index)">▼</button></td>
+                        <td><button type="button" class="btn btn-primary" ng-click="branchScheduleInfo($index)" style="margin-top: -10px;">▼</button></td>
                         <td><input type="text" ng-model="e.id" style="display: none" /></td>
 
                     <table style="width: 80%" ng-show="isShow">
@@ -50,7 +50,7 @@
                     <td><input type="text" ng-model="x.title" style="width:200px;height:35px" disabled="disabled"/></td>
                     <td><input type="text" ng-model="x.body" style="width:200px;height:35px" disabled="disabled"/></td>
                     <td><input type="text" ng-model="x.phone" style="width:200px;height:35px" disabled="disabled"/></td>
-                    <td><input ng-model="x.startTime" style="width:200px;height:35px"  disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.startTime" style="width:200px;height:35px"  disabled="disabled"/></td>
                     <td><input type="text" ng-model="x.endTime" style="width:200px;height:35px" disabled="disabled"/></td>
                     <td>
                         <input type="text" ng-if="x.TYPE==0" style="width:200px;height:35px" value="complete" disabled="disabled"/>
@@ -63,7 +63,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="closeTemplate()">关闭
+                <button type="button" class="btn btn-primary" ng-click="closeDetailsWindow()">close
                 </button>
 
             </div>

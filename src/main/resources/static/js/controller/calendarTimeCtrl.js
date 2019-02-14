@@ -50,6 +50,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }).catch(function (result) { //捕捉错误处理
         });
     }
+
     // jurisdiction();
     //Load the employee's own schedule
     //加载员工自己日程
@@ -89,10 +90,10 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }).catch(function (result) {
         });
     };
+
     function headOfficeView() {
         $http.post("/camel/api/getHeadOfficeList",{
         }).then(function (result){
-
             angular.copy(result.data, $scope.events)
             console.log(result.data);
         }).catch(function (result){
@@ -194,7 +195,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         if($rootScope.rid == 2){
             manager.mSaveSchedul();
         }else if ($rootScope.rid == 3){
-            branchEditTemplate.saveBranchTaskInfo($scope.rowId);
+            branchEditTemplate.saveBranchTaskInfo();
         }else{
             modalsss.updateMss();
             $timeout(function() {
@@ -221,20 +222,10 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         });
     },
 
-
+    //Get all the tasks for the branch today
     $scope.branchScheduleInfo = function (indexsst) {
         branchTemplate.getBranchScheduleInfo(indexsst,$rootScope._date);
     };
-
-    // // 筛选是否包含该对象
-    // function findElem(arrayToSearch,val){
-    //     for (var i=0;i<arrayToSearch.length;i++){
-    //         if(arrayToSearch[i].title==val){
-    //             return i;
-    //         }
-    //     }
-    //     return -1;
-    // }
 
     //Close the window to delete modified data
     //关闭窗口删除修改数据
@@ -243,17 +234,15 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             manager.mCloseSchedul();
             window.location.reload();
         }else if ($rootScope.rid == 3){
-            branchTemplate.closeBranchTemplate();
+            branchEditTemplate.closeBranchEditTemplate();
         }else{
             modalsss.deleteMs();
             window.location.reload();
         }
-
     };
 
     // 关闭详情窗口
     $scope.closeDetailsWindow = function () {
-
         if($rootScope.rid == 2){
             manager.mCloseSchedul()
         }else if ($rootScope.rid == 3){
@@ -265,28 +254,14 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, timezone, callback) {
-
         if(new Date(end).getMonth() == 0){
             console.log((new Date(end).getFullYear()-1) + " -"+ 12)
         }else{
             console.log((new Date(end).getFullYear()) + " -"+(new Date(end).getMonth()))
         }
-        // var s = new Date(start).getTime() / 1000;
-        // var e = new Date(end).getTime() / 1000;
-        // var m = new Date(start).getMonth();
-        // var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
         callback($scope.events)
     };;
 
-    $scope.calEventsExt = {
-        color: '#f00',
-        textColor: 'yellow',
-        events: [
-            {type:'party',title: 'Lunch',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-            {type:'party',title: 'Lunch 2',start: new Date(y, m, d, 12, 0),end: new Date(y, m, d, 14, 0),allDay: false},
-            {type:'party',title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-        ]
-    };
     /* alert on Drop */
     $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
         $scope.alertMessage = ('Event Dropped to make dayDelta ' + delta);
@@ -332,6 +307,10 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         $compile(element)($scope);
     };
 
+    $scope.pitchOnButton = function(rowId){
+        branchEditTemplate.editPitchOnButton(rowId);
+    };
+
     $scope.addBranchEditTemplate = function () {
         branchEditTemplate.branchEidtAddTemplate();
         branchEditTemplate.getBranch();
@@ -347,11 +326,14 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         branchEditTemplate.branchEditAdd();
     };
 
+    $scope.addEditBranchInfo = fiunction () {
+        editBranchInfoTemplate.editBranchInfoModalLabel();
+    }
+
     /* config object */
     $scope.uiConfig = {
         calendar:{
             height: 450,
-            width: 800,
             editable: false,
             stick: true,
             fixedWeekCount: false,

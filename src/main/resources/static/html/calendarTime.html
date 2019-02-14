@@ -1,8 +1,14 @@
 <div role="main">
     <div class="container">
         <section id="directives-calendar" ng-controller="calendarTimeCtrl">
-            <div class="page-header">
-                <h1>UI-Calendar</h1>
+            <div class="page-header" ng-if="rid == 3">
+                <h1>Center-Calendar</h1>
+            </div>
+            <div class="page-header" ng-if="rid == 2">
+                <h1>Manager-Calendar</h1>
+            </div>
+            <div class="page-header" ng-if="rid == 1">
+                <h1>Staff-Calendar</h1>
             </div>
             <div class="well">
                 <div class="row-fluid">
@@ -32,7 +38,7 @@
                                             Shatin Branch (STB)
                                         </span><br>
                                         <span style="width:50px; height:30px;background-color:Chartreuse;font-size: 15px !important;text-align: center;">
-                                            Nathan Road Branch (NAB)
+                                            Nathan Road Branch (NRB)
                                         </span><br>
                                     </div>
                                 </div>
@@ -49,7 +55,11 @@
                                         </span><br>
                                 </div>
                              </div>
-                                <div><button class="btn btn-primary" ng-click="addBranchEditTemplate()" ng-if="rid==3">Add Item</button></div>
+                                <div>
+                                    <button class="btn btn-primary" ng-click="addEditBranchInfo()" ng-if="rid==3">Management</button>
+                                    <button class="btn btn-primary" ng-click="addBranchEditTemplate()" ng-if="rid==3">Distribute</button>
+                                </div>
+
                                 <div id="content" class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
                             </tab>
                         </tabset>

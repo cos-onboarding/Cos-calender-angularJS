@@ -1,4 +1,4 @@
-app.service('branchTemplate',function ($rootScope,$http) {
+app.service('editBranchInfoTemplate',function ($rootScope,$http) {
     $rootScope.branchList = [];
     $rootScope.branchStaffList = [];
     $rootScope.isShow = false;
