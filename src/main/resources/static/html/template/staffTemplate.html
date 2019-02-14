@@ -17,25 +17,25 @@
                     <tr>
                         <td>序号</td>
                         <td>业务类型</td>
-                        <td>内容</td>
-                        <td>开始时间</td>
-                        <td>结束时间</td>
+                        <td>客户姓名</td>
+                        <td>客户电话</td>
+                        <td>预约时间</td>
                         <td>状态</td>
                         <td>操作</td>
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
                         <td>{{e.title}}</td>
-                        <td>{{e.message}}</td>
+                        <td>{{e.name}}</td>
+                        <td>{{e.phone}}</td>
                         <td>{{e.dateTime}}</td>
-                        <td>{{e.endTime}}</td>
                         <td><span ng-if="e.type == 0">Completed</span>
                             <span ng-if="e.type == 1">uncompleted</span>
                             <span ng-if="e.type == 2">Fail</span>
                         </td>
                         <td>
                             <button class="btn btn-primary" ng-click="deleteProj($index,e.id)">Delete</button>
-                            <button class="btn btn-primary" ng-click="seeProj($index)">See</button>
+                            <button class="btn btn-primary" ng-click="updateProj($index)">Update</button>
                         </td>
                     </tr>
                 </table>
@@ -45,37 +45,55 @@
             </div>
         </div><!-- /.modal -->
     </div>
-    <div class="modal" style="height:50%;width:80%; margin:0 auto; botton: auto" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div>
-            <div class="modal-body">
-                        业务类型：<input type="text" style="width:200px;height:35px" ng-model="singleEntity.title"/>
-                        内容：<input type="text" style="width:200px;height:35px" ng-model="singleEntity.message"/>
-                        开始时间：
-                            <input class="form-control" placeholder="{{singleEntity.dateTime}}"
-                                   moment-picker="ctrl.timepicker"
-                                   ng-model="singleEntity.dateTime"
-                                   format="HH:mm:ss"
-                                   ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false">
-                       结束时间：
-                            <input class="form-control" placeholder="{{singleEntity.endTime}}"
-                                   moment-picker="ctrl1.timepicker"
-                                   ng-model="singleEntity.endTime"
-                                   format="HH:mm:ss"
-                                   ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false">
-                        状态：
+    <div class="modal" style="height:80%;width:40%; margin:0 auto; botton: auto" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div>
+                        业务类型：<br><input type="text" style="width:200px;height:35px" ng-model="singleEntity.title"/>
+                    </div>
+                    <div>
+                        内容：<br><input type="text" style="width:200px;height:35px" ng-model="singleEntity.message"/>
+                    </div>
+                    <div>
+                        客户姓名：<br><input type="text" style="width:200px;height:35px" ng-model="singleEntity.name"/>
+                    </div>
+                    <div>
+                        客户电话：<br><input type="text" style="width:200px;height:35px" ng-model="singleEntity.phone"/>
+                    </div>
+                    <div>
+                        预约时间：
+                        <input style="width:200px;height:35px" class="form-control" placeholder="{{singleEntity.dateTime}}"
+                               moment-picker="ctrl.timepicker"
+                               ng-model="singleEntity.dateTime"
+                               format="HH:mm:ss"
+                               ng-model-options="{ updateOn: 'blur' }"
+                               show-header="false">
+                    </div>
+                    <div>
+                        结束时间：
+                        <input style="width:200px;height:35px" class="form-control" placeholder="{{singleEntity.endTime}}"
+                               moment-picker="ctrl1.timepicker"
+                               ng-model="singleEntity.endTime"
+                               format="HH:mm:ss"
+                               ng-model-options="{ updateOn: 'blur' }"
+                               show-header="false">
+                    </div>
+                    <div>
+                        状态：<br>
                         <select ng-model="singleEntity.type" >
                             <option ng-repeat="item in sites" ng-value="item.val">{{item.site}}</option>
                         </select>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="closeDetailsWindow()">关闭
-                </button>
-                <button type="button" class="btn btn-primary" ng-click="saveTemplate()">保存
-                </button>
-            </div>
-        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="closeDetailsWindow()">关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-click="saveTemplate()">保存
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
 </div>
 

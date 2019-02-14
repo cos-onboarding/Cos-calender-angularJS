@@ -80,7 +80,11 @@ public class CamelRoute extends RouteBuilder {
 
 	@Value("${saveTaskQuantity.url}")
 	private String saveTaskQuantityUrl;
-	
+
+	@Value("${seePersonalNumber.url}")
+	private String seePersonalNumberUrl;
+
+
 	@Override
 	public void configure() throws Exception {
 		restConfiguration()
@@ -92,6 +96,13 @@ public class CamelRoute extends RouteBuilder {
 		  .apiProperty("api.version", "v1")
 		  .apiContextRouteId("doc-api")
 		  .component("servlet");
+
+		rest("/api/")
+				.id("seePersonalNumber-route")
+				.consumes("application/json")
+				.post("/seePersonalNumber")
+				.to("direct:seePersonalNumberService");
+		from("direct:seePersonalNumberService").process(new CalendarProcessor()).to(seePersonalNumberUrl);
 
 		rest("/api/")
 				.id("everyDayCount-route")
