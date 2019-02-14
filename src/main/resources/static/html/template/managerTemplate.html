@@ -1,72 +1,116 @@
 <div>
-    <div class="modal" style="height:50%;width:80%; margin:0 auto; botton: auto" id="managerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div>
+    <div class="modal" style="height:50%;width:100%; margin:0 auto; botton: auto" id="managerListModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">
                     Schedule Details
                 </h4>
                 <h4>
-                    EverydaySchedule：30
+                    EverydaySchedule：<input style="width: 20%" type="text" ng-model="dayCount.maxCount" ng-disabled="isJudge"/>
+                    <button class="btn btn-primary" ng-click="saveCount(dayCount.id,2)" ng-show="!isJudge">保存</button>
+                    <button class="btn btn-primary" ng-click="updateCount()" ng-show="isJudge">编辑</button>
                 </h4>
-                <!--<button type="button" class="close" ng-click="closeTemplate()">-->
-                    <!--&times;-->
-                <!--</button>-->
                 <button class="btn btn-primary" ng-click="addSchedule()">Distribution Schedule</button>
             </div>
             <div class="modal-body">
-                <table style="display:inline-block">
+                <table style="width: 100%">
                     <tr>
                         <td>序号</td>
-                        <td>数量</td>
                         <td>员工</td>
                         <td>业务类型</td>
-                        <td>内容</td>
-                        <td>开始时间</td>
-                        <td>结束时间</td>
+                        <td>客户姓名</td>
+                        <td>客户电话</td>
+                        <td>预约时间</td>
                         <td>状态</td>
                         <td>操作</td>
                     </tr>
                     <tr ng-repeat="e in schedule">
                         <td>{{$index + 1}}</td>
-                        <td>10</td>
                         <td>
-                            <select ng-disabled="e.type == 0? true:false" ng-model="e.userId" style="width:200px;height:35px">
+                            <select disabled ng-model="e.userId" style="width:200px;height:35px">
                                 <option ng-repeat="x in staffList" ng-value="x.id">{{x.userName}}</option>
                             </select>
                         </td>
-                        <td><input ng-disabled="e.type == 0? true:false" type="text" style="width:200px;height:35px" ng-model="e.title"/></td>
-                        <td><input ng-disabled="e.type == 0? true:false" type="text" style="width:200px;height:35px" ng-model="e.message"/></td>
+                        <td>{{e.title}}</td>
+                        <td>{{e.name}}</td>
+                        <td>{{e.phone}}</td>
+                        <td>{{e.dateTime}}</td>
                         <td>
-                            <input ng-disabled="e.type == 0? true:false" class="form-control" placeholder="{{e.dateTime}}"
-                                   moment-picker="ctrl3.timepicker"
-                                   ng-model="e.dateTime"
-                                   format="HH:mm:ss"
-                                   ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false">
+                            <span ng-if="e.type == 0">Completed</span>
+                            <span ng-if="e.type == 1">uncompleted</span>
+                            <span ng-if="e.type == 2">Fail</span>
                         </td>
                         <td>
-                            <input ng-disabled="e.type == 0? true:false" class="form-control" placeholder="{{e.endTime}}"
-                                   moment-picker="ctrl2.timepicker"
-                                   ng-model="e.endTime"
-                                   format="HH:mm:ss"
-                                   ng-model-options="{ updateOn: 'blur' }"
-                                   show-header="false">
+                            <button type="button" class="btn btn-primary" ng-click="deleteProj($index,e.id)">Delete</button>
+                            <button class="btn btn-primary" ng-click="updateProj($index)">Update</button>
                         </td>
-                        <td>
-                            <select ng-disabled="e.type == 0? true:false" ng-model="e.type" style="width:200px;height:35px">
-                                <option ng-repeat="item in sites" ng-value="item.val">{{item.site}}</option>
-                            </select>
-                        </td>
-                        <td><button type="button" class="btn btn-primary" ng-click="deleteProj($index)">Delete</button></td>
                     </tr>
                 </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="closeTemplate()">Close
                 </button>
-                <button type="button" class="btn btn-primary" ng-click="saveTemplate()">Save
-                </button>
             </div>
+    </div>
+    <div class="modal"  style="height:80%;width:40%; margin:0 auto; botton: auto" id="managerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div>
+                        请选择人员：<br>
+                        <select ng-model="singleEntity.userId" style="width:200px;height:35px" ng-change="seeNumber(singleEntity.userId)">
+                            <option ng-repeat="x in staffList" ng-value="x.id">{{x.userName}}</option>
+                        </select>
+                    </div>
+                    <div>
+                        业务类型：<br>
+                        <input type="text" style="width:200px;height:35px" ng-model="singleEntity.title"/>
+                    </div>
+                    <div>
+                        内容：<br>
+                        <input type="text" style="width:200px;height:35px" ng-model="singleEntity.message"/>
+                    </div>
+                    <div>
+                        客户姓名：<br>
+                        <input type="text" style="width:200px;height:35px" ng-model="singleEntity.name"/>
+                    </div>
+                    <div>
+                        客户电话：<br>
+                        <input type="text" style="width:200px;height:35px" ng-model="singleEntity.phone"/>
+                    </div>
+                    <div>
+                        预约时间：<input class="form-control" style="width:200px;height:35px" placeholder="{{singleEntity.dateTime}}"
+                                    moment-picker="ctrl3.timepicker"
+                                    ng-model="singleEntity.dateTime"
+                                    format="HH:mm:ss"
+                                    ng-model-options="{ updateOn: 'blur' }"
+                                    show-header="false">
+                    </div>
+                    <div>
+                        结束时间：<input class="form-control" style="width:200px;height:35px" placeholder="{{singleEntity.endTime}}"
+                                    moment-picker="ctrl2.timepicker"
+                                    ng-model="singleEntity.endTime"
+                                    format="HH:mm:ss"
+                                    ng-model-options="{ updateOn: 'blur' }"
+                                    show-header="false">
+                    </div>
+                    <div>
+                        状态：<br>
+                        <select ng-model="singleEntity.type" style="width:200px;height:35px">
+                            <option ng-repeat="item in sites" ng-value="item.val">{{item.site}}</option>
+                        </select>
+                    </div>
+                    <div>
+                        接收数量：<span>{{countNumber.maxCount}}</span>
+                        剩余数量：<span>{{countNumber.surplusNumber}}</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" ng-click="closeDetailsWindow()">Close
+                    </button>
+                    <button type="button" class="btn btn-primary" ng-show="isSurplus" ng-click="saveTemplate()">Save
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
 </div>

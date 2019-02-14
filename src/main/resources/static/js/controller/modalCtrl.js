@@ -31,8 +31,8 @@ app.service('modalsss',function ($rootScope,$http,chServer) {
 
         //Delete the schedule
         //删除日程
-        deleteProjs:function (id) {
-            var param = {id:id}
+        deleteProjs:function (id,timeStamp,userId) {
+            var param = {id:id,timeStamp:timeStamp,userId:userId}
             $http.post("/camel/api/deleteSchdule",param ,{
             }).then(function (result) {
             }).catch(function (result) {
@@ -42,7 +42,6 @@ app.service('modalsss',function ($rootScope,$http,chServer) {
         //Add the schedule
         // 添加日程
         addSchedules: function (date,userId,branchId) {
-            console.log(date)
             $rootScope.singleEntity = {
                 infoId:date,
                 bid:branchId,
@@ -92,6 +91,7 @@ app.service('modalsss',function ($rootScope,$http,chServer) {
             });
             $('#myModal').modal('hide');
         },
+
 
         //Close the window to delete modified data
         //关闭窗口删除修改数据

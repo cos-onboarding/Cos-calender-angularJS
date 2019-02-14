@@ -31,7 +31,8 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
     //Access permissions
     //获取权限
-    $scope.jurisdiction = function() {
+    $scope.jurisdiction = function () {
+        console.log("123" + $rootScope.adadad )
         var param = {userId: $scope.userId};
         $http.post("/camel/api/getGrade",param,{
         }).then(function (result) {  //
@@ -47,6 +48,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
                 staffLoads(param);
                 $scope.uiConfig.calendar.eventStartEditable = true;
             }
+
         }).catch(function (result) { //捕捉错误处理
         });
     }
@@ -105,9 +107,11 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     // 点击日期
     $scope.eventOne = function (date, allDay, jsEvent, view) {
         $rootScope._date = date._i;
+        console.log(date._i)
         if($rootScope.rid == 2){
-            manager.allEventOnes(date, allDay, jsEvent, view,$scope.branchId);
-            manager.getStaff(); // 查询员工   Query staff
+            everyDayCount($scope.userId,date._i,2);
+            manager.allEventOnes(date._i, $scope.branchId);
+            manager.getStaff($scope.branchId); // 查询员工   Query staff
         }else if ($rootScope.rid == 3){
             branchTemplate.branchEventOne(date, allDay, jsEvent, view,$scope.branchId);
         }else{
@@ -134,15 +138,23 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         });
     }
 
+    // 查看员工剩余数量
+    $scope.seeNumber = function (userId) {
+        manager.seePersonalNumber(userId,$rootScope._date)
+    }
+
     //Delete the schedule
     // 删除日程
     $scope.deleteProj = function (indexs,id) {
         if($rootScope.rid == 2){
-            manager.mDeleteSchedule(indexs);
+            modalsss.deleteProjs(id,$rootScope._date,$scope.userId);
+            $timeout(function() {
+                manager.allEventOnes($rootScope._date,$scope.branchId);
+            }, 1000);
         }else if ($rootScope.rid == 3){
             branchTemplate.deleteTemplateRowInfo(indexs);
         }else{
-            modalsss.deleteProjs(id);
+            modalsss.deleteProjs(id,$rootScope._date,$scope.userId);
             $timeout(function() {
                 modalsss.eventOnes($rootScope._date,$scope.userId,$scope.branchId);
             }, 1000);
@@ -150,8 +162,12 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     }
 
     //查看单个日程
-    $scope.seeProj = function (index) {
+    $scope.updateProj = function (index) {
         if($rootScope.rid == 2){
+            manager.seeOneProj(index);
+            var userId =$rootScope.schedule[index].userId;
+            var infoId =$rootScope.schedule[index].infoId;
+            manager.seePersonalNumber(userId,infoId);
         }else if ($rootScope.rid == 3){
         }else{
             modalsss.seeOneProj(index);
@@ -162,7 +178,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     // 添加日程
     $scope.addSchedule = function () {
         if($rootScope.rid == 2){
-            manager.mAddSchedule($scope.branchId);
+            manager.mAddSchedule($rootScope._date,$scope.branchId);
         }else if ($rootScope.rid == 3){
             branchTemplate.branchAdd($scope.branchId);
         }else{
@@ -176,12 +192,13 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             $rootScope.dayCount.everyDay = $rootScope.timeStamp;
             $rootScope.dayCount.type = type;
             $rootScope.dayCount.userId = $scope.userId;
-            // everyDay:$rootScope.timeStamp,
-            //     type:type,
-            //     userId:$scope.userId
         }
-        console.log($rootScope.dayCount);
-        $rootScope.isJudge = true;
+        $http.post("/camel/api/saveTaskQuantity",$rootScope.dayCount,{
+        }).then(function (result) {
+            everyDayCount($scope.userId,$rootScope.timeStamp,type)
+            $rootScope.isJudge = true;
+        }).catch(function (result) {
+        });
     }
 
     // 编辑任务量
@@ -191,9 +208,12 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
     //Save window replacement data
     // 保存窗口替换数据
-    $scope.saveTemplate = function (event) {
+    $scope.saveTemplate = function () {
         if($rootScope.rid == 2){
             manager.mSaveSchedul();
+            $timeout(function() {
+                manager.allEventOnes($rootScope._date,$scope.branchId);
+            }, 1000);
         }else if ($rootScope.rid == 3){
             branchEditTemplate.saveBranchTaskInfo();
         }else{
@@ -204,23 +224,30 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         }
         // window.location.reload();
     };
-
     //Drag and drop functionality
     // 拖拽功能
     $scope.endDragStip = function (event, delta, revertFunc, jsEvent, ui, view) {
-        console.log(event)
-        console.log(delta._days)
         var timeStamp = chServer.dateTimeChuo(event.info_id,delta._days);
         var allToDay = chServer.dateAddDays(event.start,delta._days);
-        console.log(timeStamp);
-        console.log(allToDay);
+        var eventId = event.id;
+        var param = {dateTime:timeStamp,userId:$scope.userId}
+        $http.post("/camel/api/seePersonalNumber",param).then(function(res){
+            // 把数据存到server中并返回
+            if (res.data[0] != undefined && res.data[0] != null ){
+                saveHaul(eventId,timeStamp,allToDay);
+            }else {
+                revertFunc();
+            }
+        })
+    };
 
-        var param = {id:event.id,timeStamp:timeStamp,timeDay:allToDay};
+    function saveHaul(id,timeStamp,allToDay) {
+        var param = {id:id,timeStamp:timeStamp,timeDay:allToDay};
         $http.post("/camel/api/dragAndDrop",param,{
         }).then(function (result) {
         }).catch(function (result) {
         });
-    },
+    }
 
     //Get all the tasks for the branch today
     $scope.branchScheduleInfo = function (indexsst) {
@@ -244,7 +271,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     // 关闭详情窗口
     $scope.closeDetailsWindow = function () {
         if($rootScope.rid == 2){
-            manager.mCloseSchedul()
+            manager.closeOneDetailsWindow();
         }else if ($rootScope.rid == 3){
             branchTemplate.closeBranchTemplate();
         }else{
@@ -255,12 +282,19 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, timezone, callback) {
         if(new Date(end).getMonth() == 0){
+            $rootScope.adadad = (new Date(end).getFullYear()-1) + " -"+ 12;
             console.log((new Date(end).getFullYear()-1) + " -"+ 12)
         }else{
+            $rootScope.adadad = (new Date(end).getFullYear()) + " -"+(new Date(end).getMonth());
             console.log((new Date(end).getFullYear()) + " -"+(new Date(end).getMonth()))
         }
+        $scope.jurisdiction();
+        // var s = new Date(start).getTime() / 1000;
+        // var e = new Date(end).getTime() / 1000;
+        // var m = new Date(start).getMonth();
+        // var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
         callback($scope.events)
-    };;
+    };
 
     /* alert on Drop */
     $scope.alertOnDrop = function(event, delta, revertFunc, jsEvent, ui, view){
@@ -319,16 +353,18 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     $scope.closeEditTemplate = function() {
         branchEditTemplate.closeBranchEditTemplate();
     };
+
     $scope.submitUpdate = function(indexs){
         branchEditTemplate.branchEditDelRow(indexs);
     };
+
     $scope.addBranchSchedule = function () {
         branchEditTemplate.branchEditAdd();
     };
 
-    $scope.addEditBranchInfo = fiunction () {
+    $scope.addEditBranchInfo = function () {
         editBranchInfoTemplate.editBranchInfoModalLabel();
-    }
+    };
 
     /* config object */
     $scope.uiConfig = {
@@ -344,16 +380,17 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             businessHours: {
                 dow: [ 1, 2, 3, 4, 5 ], // 周一 - 周四
             },
+            titleFormat:'MMMM YYYY',
             header:{
                 left: 'prevYear, nextYear, title, ',
                 center: '',
-                right: 'today prev,next'
+                right: 'prev,next'
             },
             // eventDrop: $scope.alertOnDrop,
             eventResize: $scope.alertOnResize,
             eventRender: $scope.eventRenders,
             dayClick: $scope.eventOne,
-            loading:$scope.jurisdiction,
+            // loading:$scope.jurisdiction,
             eventDrop:$scope.endDragStip 
             // eventMouseover:$scope.eventMou
             /* Mouseover*/

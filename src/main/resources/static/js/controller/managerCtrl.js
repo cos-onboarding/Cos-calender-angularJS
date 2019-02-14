@@ -1,10 +1,17 @@
 app.service('manager',function ($rootScope,$http,chServer) {
     $rootScope.staffList = [];
+    $rootScope.isSurplus = false;
+    $rootScope.countNumber = {
+        maxCount:0,
+        surplusNumber:0,
+        number:0
+    }; // 查询剩余任务量对象
     return {
         //Get the employee list
         //获取员工列表
-        getStaff:function () {
-            $http.post("/camel/api/getStaffList" ,{
+        getStaff:function (bid) {
+            var param = {bid:bid}
+            $http.post("/camel/api/getStaffList" ,param ,{
             }).then(function (result) {
                 $rootScope.staffList = result.data;
             }).catch(function (result) {
@@ -12,41 +19,47 @@ app.service('manager',function ($rootScope,$http,chServer) {
         },
         //Click the date to get the schedule information
         // 点击日期  获取日程信息
-        allEventOnes :function (date, allDay, jsEvent, view,bid) {
+        allEventOnes :function (date,bid) {
             //Get timestamp
                 // 获取时间戳
-                $rootScope.timeStamp = date._i;
-            var param = { timeStamp: date._i,bid:bid};
+                $rootScope.timeStamp = date;
+            var param = { timeStamp:date,bid:bid};
             $http.post("/camel/api/getDaySchedule",param ,{
             }).then(function (result) {
                 $rootScope.schedule = result.data;
             }).catch(function (result) {
             });
-            $('#managerModal').modal('show');
+            $('#managerListModal').modal('show');
         },
         //Allocation schedule
         //分配日程
-        mAddSchedule:function (bid) {
-            //Append a schedule for a single day
-            //追加单独某天的日程
-            var ms = {id:0,title:'',message: '',dateTime: '',endTime:'',infoId:$rootScope.timeStamp,userId:"",type:1,bid:bid}
-            $rootScope.schedule.push(ms);
-        },
-        //Delete allocation schedule
-        // 删除分配日程
-        mDeleteSchedule:function (indexs) {
-            if($rootScope.schedule[indexs].id != 0){
-                $rootScope.scheduleDel.push($rootScope.schedule[indexs]);
+        mAddSchedule:function (date,bid) {
+            $rootScope.countNumber = {
+                maxCount:0,
+                surplusNumber:0,
+                number:0
+            };
+            $rootScope.singleEntity = {
+                infoId:date,
+                bid:bid,
+                userId:0,
+                id:0
             }
-            $rootScope.schedule.splice(indexs,1);
+            $('#managerModal').modal('show');
+        },
+
+        //查看日程
+        seeOneProj:function (index) {
+            $rootScope.singleEntity = $rootScope.schedule[index];
+            console.log($rootScope.singleEntity)
+            $('#managerModal').modal('show');
         },
         //Save the data
         // 保存数据
         mSaveSchedul:function () {
-            for (var i =0;i<$rootScope.schedule.length;i++){
-                var dateTime = $rootScope.schedule[i].dateTime;
-                var endTime = $rootScope.schedule[i].endTime;
-                var times = $rootScope.schedule[i].infoId;
+                var dateTime = $rootScope.singleEntity.dateTime;
+                var endTime = $rootScope.singleEntity.endTime;
+                var times = $rootScope.singleEntity.infoId;
                 var d = chServer.dateStampDay(times);
                 var c = " ";
                 var a = " ";
@@ -60,27 +73,54 @@ app.service('manager',function ($rootScope,$http,chServer) {
                 }else{
                     a =  a + endTime;
                 }
-                $rootScope.schedule[i].dateTime = d+c;
-                $rootScope.schedule[i].endTime = d+a;
-            }
+                $rootScope.singleEntity.dateTime = d+c;
+                $rootScope.singleEntity.endTime = d+a;
             var param = {
                 time:$rootScope.timeStamp,
-                scheduleDel:$rootScope.scheduleDel,
-                schedule:$rootScope.schedule
+                schedule:$rootScope.singleEntity
             }
+            console.log($rootScope.singleEntity)
             $http.post("/camel/api/saveCalendarSchdule",param ,{
             }).then(function (result) {
 
             }).catch(function (result) {
             });
-            $rootScope.scheduleDel = [];
             $('#managerModal').modal('hide');
         },
+
+        // 查看个人剩余任务量
+        seePersonalNumber:function(userId,dateTime) {
+            $rootScope.singleEntity.userId = userId;
+            var param = {userId:userId,dateTime:dateTime}
+            $http.post("/camel/api/seePersonalNumber",param,{
+            }).then(function (result) {
+                if(result.data[0] != undefined){
+                    $rootScope.countNumber = result.data[0];
+                    $rootScope.countNumber.surplusNumber = $rootScope.countNumber.maxCount - $rootScope.countNumber.number;
+                    console.log($rootScope.countNumber)
+                }else{
+                    $rootScope.countNumber.maxCount = 0;
+                    $rootScope.countNumber.surplusNumber = 0;
+                    $rootScope.countNumber.number = 0;
+                }
+                if ($rootScope.countNumber.surplusNumber == 0){
+                    $rootScope.isSurplus = false;
+                }else{
+                    $rootScope.isSurplus = true;
+                }
+            }).catch(function (result) {
+            });
+        },
+
         //Close the window
         // 关闭窗口
         mCloseSchedul:function () {
-            $rootScope.scheduleDel = [];
+            $('#managerListModal').modal('hide');
+        },
+        closeOneDetailsWindow:function () {
             $('#managerModal').modal('hide');
         }
+
+
     }
 });
