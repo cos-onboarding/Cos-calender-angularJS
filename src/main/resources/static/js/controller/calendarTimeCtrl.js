@@ -166,7 +166,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     //查看单个日程
     $scope.updateProj = function (index) {
         if($rootScope.rid == 2){
-            manager.seeOneProj(index);
+            manager.seeOneProj1(index);
             var userId =$rootScope.schedule[index].userId;
             var infoId =$rootScope.schedule[index].infoId;
             manager.seePersonalNumber(userId,infoId);
@@ -214,17 +214,16 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         if($rootScope.rid == 2){
             manager.mSaveSchedul();
             $timeout(function() {
-                manager.allEventOnes($rootScope._date,$scope.branchId);
-            }, 1000);
+                manager.allEventOnes($rootScope._date,$scope.branchId,$rootScope.rid);
+            }, 1500);
         }else if ($rootScope.rid == 3){
             branchEditTemplate.saveBranchTaskInfo();
         }else{
             modalsss.updateMss();
             $timeout(function() {
-                modalsss.eventOnes($rootScope._date,$scope.userId,$scope.branchId);
+                modalsss.eventOnes($rootScope._date,$scope.userId,$scope.branchId,$rootScope.rid);
             }, 1000);
         }
-        // window.location.reload();
     };
     //Drag and drop functionality
     // 拖拽功能
@@ -271,7 +270,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     };
 
     // 关闭详情窗口
-    $scope.closeDetailsWindow = function () {
+    $scope.closeDetailsWindowAll = function () {
         if($rootScope.rid == 2){
             manager.closeOneDetailsWindow();
         }else if ($rootScope.rid == 3){

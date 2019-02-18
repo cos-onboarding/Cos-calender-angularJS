@@ -22,15 +22,17 @@ app.service('manager',function ($rootScope,$http,chServer) {
         allEventOnes :function (date,bid,rid) {
             //Get timestamp
                 // 获取时间戳
-                $rootScope.timeStamp = date;
+            $rootScope.timeStamp = date;
             var param = { timeStamp:date,bid:bid,rid:rid};
+            console.log(rid);
             $http.post("/camel/api/getDaySchedule",param ,{
             }).then(function (result) {
                 $rootScope.schedule = result.data;
-                $('#managerListModal').modal('show');
+                console.log($rootScope.schedule)
             }).catch(function (result) {
+                console.info(result);
             });
-
+            $('#managerModal').modal('show');
         },
         //Allocation schedule
         //分配日程
@@ -50,10 +52,10 @@ app.service('manager',function ($rootScope,$http,chServer) {
         },
 
         //查看日程
-        seeOneProj:function (index) {
+        seeOneProj1:function (index) {
             $rootScope.singleEntity = $rootScope.schedule[index];
             console.log($rootScope.singleEntity)
-            $('#managerModal').modal('show');
+            $('#managerListModal').modal('show');
         },
         //Save the data
         // 保存数据
@@ -86,7 +88,7 @@ app.service('manager',function ($rootScope,$http,chServer) {
 
             }).catch(function (result) {
             });
-            $('#managerModal').modal('hide');
+            $('#managerListModal').modal('hide');
         },
 
         // 查看个人剩余任务量
@@ -116,10 +118,10 @@ app.service('manager',function ($rootScope,$http,chServer) {
         //Close the window
         // 关闭窗口
         mCloseSchedul:function () {
-            $('#managerListModal').modal('hide');
+            $('#managerModal').modal('hide');
         },
         closeOneDetailsWindow:function () {
-            $('#managerModal').modal('hide');
+            $('#managerListModal').modal('hide');
         }
 
 
