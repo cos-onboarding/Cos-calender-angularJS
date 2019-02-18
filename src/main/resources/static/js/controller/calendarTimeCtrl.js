@@ -364,7 +364,6 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     };*/
 
     $scope.addEditBranchInfoTemplate = function () {
-        editBranchInfoTemplate.editBranchInfoModalLabel();
         editBranchInfoTemplate.getBranchInfoList();
     };
 
@@ -389,6 +388,9 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     };
     $scope.saveAddBranchInfoButton = function () {
         editBranchInfoTemplate.saveAddBranchInfo();
+        $timeout(function() {
+            editBranchInfoTemplate.getBranchInfoList();
+        }, 500);
     };
     $scope.deleteRowBranchInfoButton = function (index) {
         editBranchInfoTemplate.deleteRowBranchInfo(index);

@@ -5,9 +5,6 @@ app.service('editBranchInfoTemplate',function ($rootScope,$http) {
     $rootScope.addInfoList = [];
     $rootScope.addInfo = []
     return {
-        editBranchInfoModalLabel: function(){
-            $('#editBranchInfoModalLabel').modal('show');
-        },
 
         closeEditBranchInfoTemplate: function () {
             $('#editBranchInfoModalLabel').modal('hide');
@@ -46,11 +43,11 @@ app.service('editBranchInfoTemplate',function ($rootScope,$http) {
                      $rootScope["isDisabled"+$rootScope.branchInfoList[i].branchId] = true;
                     console.log($rootScope["isDisabled"+$rootScope.branchInfoList[i].branchId]);
                 }
-
                 console.log("员工集合:" + JSON.stringify(result));
             }).catch(function (result) { //捕捉错误处理
                 console.info(result);
             });
+            $('#editBranchInfoModalLabel').modal('show');
         },
 
         //保存
@@ -71,6 +68,7 @@ app.service('editBranchInfoTemplate',function ($rootScope,$http) {
             }
             $('#editBranchInfoModalLabel').modal('hide');
         },
+
         deleteRowBranchInfo: function (index) {
             alert("Are you sure you want to delete the " + $rootScope.branchInfoList[index].branchName + " information?");
             if ($rootScope.branchInfoList[index].id != 0) {
@@ -80,21 +78,7 @@ app.service('editBranchInfoTemplate',function ($rootScope,$http) {
             delete $rootScope.branchInfoList[index]
             $rootScope.isAllDisabled = false;
         },
-        //Get all the tasks for the branch today
-        getBranchScheduleInfo: function (indexs, date) {
-            var params = {id: $rootScope.schedule[indexs].id, time: date};
-            $http.post("/camel/api/dayBranchStaffInfo", params, {}).then(function (result){
-                $rootScope.branchStaffList = result.data;
-                for(var i = 0; i < $rootScope.branchStaffList.length; i++){
-                    $rootScope.branchStaffList[i].endTime = $rootScope.branchStaffList[i].endTime.replace("T", " ");
-                    $rootScope.branchStaffList[i].startTime = $rootScope.branchStaffList[i].startTime.replace("T", " ");
-                }
-                console.log(JSON.stringify($rootScope.branchStaffList));
-                $rootScope.isShow = !$rootScope.isShow;
-            }).catch(function (result) { //捕捉错误处理
-                console.info(result);
-            });
-        },
+
         openMyBranchModel: function () {
             $rootScope.addInfo = {
                 branchName:'',
@@ -111,11 +95,18 @@ app.service('editBranchInfoTemplate',function ($rootScope,$http) {
         },
 
         saveAddBranchInfo: function () {
-            $rootScope.addInfo.creatTime = '';
-            $rootScope.addInfo.branchLevel = 0;
-            $rootScope.branchInfoList.unshift($rootScope.addInfo);
             $rootScope.addInfoList.push($rootScope.addInfo);
-            $('#myBranchModel').modal('hide');
+            var param = {
+                branchAddInfo: $rootScope.addInfoList
+            };
+            $http.post("/camel/api/editBranchInfo", param, {}).then(function (result) {  //正确请求成功时处理
+                $rootScope.addInfoList = [];
+                $('#editBranchInfoModalLabel').modal('hide');
+                $('#myBranchModel').modal('hide');
+            }).catch(function (result) { //捕捉错误处理
+                alert("fail");
+            });
+
             $rootScope.isAllDisabled = false;
         },
     }
