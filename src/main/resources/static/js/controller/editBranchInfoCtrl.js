@@ -62,15 +62,9 @@ app.service('editBranchInfoTemplate',function ($rootScope,$http) {
                 branchDelInfo: $rootScope.delInfoList
             }
             console.log(JSON.stringify(param))
-            if(JSON.stringify($rootScope.addInfoList) != '[]' || JSON.stringify($rootScope.updateInfoList) != '[]'){
+            if(JSON.stringify($rootScope.addInfoList) != '[]' || JSON.stringify($rootScope.updateInfoList) != '[]' || JSON.stringify($rootScope.delInfoList) != '[]'){
                 $http.post("/camel/api/editBranchInfo", param, {}).then(function (result) {  //正确请求成功时处理
                     $rootScope.addInfoList = [];
-                }).catch(function (result) { //捕捉错误处理
-                    console.info(result);
-                });
-            }else if(JSON.stringify($rootScope.delInfoList) != '[]'){
-                $http.post("/camel/api/delBranchInfo", param, {}).then(function (result) {  //正确请求成功时处理
-                    $rootScope.delInfoList = [];
                 }).catch(function (result) { //捕捉错误处理
                     console.info(result);
                 });
@@ -102,6 +96,13 @@ app.service('editBranchInfoTemplate',function ($rootScope,$http) {
             });
         },
         openMyBranchModel: function () {
+            $rootScope.addInfo = {
+                branchName:'',
+                branchLocation:'',
+                branchManager:'',
+                phone:'',
+                branchAddress:''
+            }
             $('#myBranchModel').modal('show');
         },
         //关闭Template
@@ -113,7 +114,6 @@ app.service('editBranchInfoTemplate',function ($rootScope,$http) {
             $rootScope.addInfo.creatTime = '';
             $rootScope.addInfo.branchLevel = 0;
             $rootScope.branchInfoList.unshift($rootScope.addInfo);
-            $rootScope.addInfo = [];
             $rootScope.addInfoList.push($rootScope.addInfo);
             $('#myBranchModel').modal('hide');
             $rootScope.isAllDisabled = false;
