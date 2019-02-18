@@ -30,8 +30,8 @@ public class CamelRoute extends RouteBuilder {
 	@Value("${applications.overview.url}")
 	private String appsOverviewUrl;
 
-	@Value("${calendar.time.url}")
-	private String calendarTimeUrl;
+	@Value("${getCalenderTitle.url}")
+	private String getCalenderTitleUrl;
 
 	@Value("${daySchedule.time.url}")
 	private String dayScheduleUrl;
@@ -41,20 +41,12 @@ public class CamelRoute extends RouteBuilder {
 
 	@Value("${calendarSchduleUrl.time.url}")
 	private String calendarSchduleUrl;
-	@Value("${getAllTimeScheduleUrl.time.url}")
-	private String getAllTimeScheduleUrl;
 
 	@Value("${getStaffListUrl.url}")
 	private String getStaffListUrl;
 
 	@Value("${getAllBranchUrl.url}")
 	private String getAllBranchUrl;
-
-	@Value("${calender.head.office.url}")
-	private String headOfficeListUrl;
-
-	@Value("${calender.day.branch.url}")
-	private String dayAllBranchScheduleUrl;
 
 	@Value("${calender.day.branch.staff.url}")
 	private String dayBranchStaffInfoUrl;
@@ -158,9 +150,9 @@ public class CamelRoute extends RouteBuilder {
 		rest("/api/")
 				.id("calendarTime-route")
 				.consumes("application/json")
-				.post("/getCalendarTimeList")
-				.to("direct:calendarTimeService");
-		from("direct:calendarTimeService").process(new CalendarProcessor()).to(calendarTimeUrl);
+				.post("/getCalenderTitle")
+				.to("direct:getCalenderTitleService");
+		from("direct:getCalenderTitleService").process(new CalendarProcessor()).to(getCalenderTitleUrl);
 
 		rest("/api/")
 				.id("daySchedule-route")
@@ -193,30 +185,9 @@ public class CamelRoute extends RouteBuilder {
 		rest("/api/")
 				.id("daySchedule-route")
 				.consumes("application/json")
-				.post("/getAllTimeSchedule")
-				.to("direct:getAllTimeScheduleService");
-		from("direct:getAllTimeScheduleService").process(new CalendarProcessor()).to(getAllTimeScheduleUrl);
-
-		rest("/api/")
-				.id("daySchedule-route")
-				.consumes("application/json")
 				.post("/getStaffList")
 				.to("direct:getStaffListService");
 		from("direct:getStaffListService").process(new CalendarProcessor()).to(getStaffListUrl);
-
-		rest("/api/")
-				.id("daySchedule-route")
-				.consumes("application/json")
-				.post("/getHeadOfficeList")
-				.to("direct:getHeadOfficeListService");
-		from("direct:getHeadOfficeListService").process(new CalendarProcessor()).to(headOfficeListUrl);
-
-		rest("/api/")
-				.id("daySchedule-route")
-				.consumes("application/json")
-				.post("/getAllBranchSchedule")
-				.to("direct:getAllBranchScheduleService");
-		from("direct:getAllBranchScheduleService").process(new CalendarProcessor()).to(dayAllBranchScheduleUrl);
 
 		rest("/api/")
 				.id("daySchedule-route")

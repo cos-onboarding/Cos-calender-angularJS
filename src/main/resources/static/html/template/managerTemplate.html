@@ -9,7 +9,7 @@
                     <button class="btn btn-primary" ng-click="saveCount(dayCount.id,2)" ng-show="!isJudge">保存</button>
                     <button class="btn btn-primary" ng-click="updateCount()" ng-show="isJudge">编辑</button>
                 </h4>
-                <button class="btn btn-primary" ng-click="addSchedule()">Distribution Schedule</button>
+                <button class="btn btn-primary" ng-click="addSchedule(1)">Distribution Schedule</button>
             </div>
             <div class="modal-body">
                 <table style="width: 100%">
@@ -41,7 +41,7 @@
                         </td>
                         <td>
                             <button type="button" class="btn btn-primary" ng-click="deleteProj($index,e.id)">Delete</button>
-                            <button class="btn btn-primary" ng-click="updateProj($index)">Update</button>
+                            <button class="btn btn-primary" ng-click="updateProj($index,2)">Update</button>
                         </td>
                     </tr>
                 </table>

@@ -13,12 +13,11 @@ app.service('modalsss',function ($rootScope,$http,chServer) {
 
         //Click the date to get the schedule information
     // 点击日期  获取日程信息
-        eventOnes :function (date,userId,bid) {
+        eventOnes :function (date,userId,bid,rid) {
             //Get timestamp
             // 获取时间戳
             $rootScope.timeStamp = date;
-            console.log(date);
-            var param = { timeStamp: $rootScope.timeStamp, userId: userId};
+            var param = { timeStamp: $rootScope.timeStamp, userId: userId,rid:rid};
             $http.post("/camel/api/getDaySchedule",param ,{
             }).then(function (result) {
                 $rootScope.schedule = result.data;
