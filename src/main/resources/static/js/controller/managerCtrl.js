@@ -19,17 +19,18 @@ app.service('manager',function ($rootScope,$http,chServer) {
         },
         //Click the date to get the schedule information
         // 点击日期  获取日程信息
-        allEventOnes :function (date,bid) {
+        allEventOnes :function (date,bid,rid) {
             //Get timestamp
                 // 获取时间戳
                 $rootScope.timeStamp = date;
-            var param = { timeStamp:date,bid:bid};
+            var param = { timeStamp:date,bid:bid,rid:rid};
             $http.post("/camel/api/getDaySchedule",param ,{
             }).then(function (result) {
                 $rootScope.schedule = result.data;
+                $('#managerListModal').modal('show');
             }).catch(function (result) {
             });
-            $('#managerListModal').modal('show');
+
         },
         //Allocation schedule
         //分配日程

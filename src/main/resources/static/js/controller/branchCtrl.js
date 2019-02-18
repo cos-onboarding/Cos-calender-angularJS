@@ -14,12 +14,12 @@ app.service('branchTemplate',function ($rootScope,$http) {
             });
         },
         // 点击日期  获取日程信息
-        branchEventOne: function (date, allDay, jsEvent, view) {
+        branchEventOne: function (date,bid,rid) {
             if($rootScope.isShow==true){
                 $rootScope.isShow = !$rootScope.isShow;
             }
-            var param = {time: date._i};
-            $http.post("/camel/api/getAllBranchSchedule", param, {}).then(function (result) {  //正确请求成功时处理
+            var param = {timeStamp: date,rid:rid};
+            $http.post("/camel/api/getDaySchedule", param, {}).then(function (result) {  //正确请求成功时处理
                 if (result.data.length != 0) {
                     $rootScope.schedule = result.data;
                     console.log(JSON.stringify($rootScope.schedule));

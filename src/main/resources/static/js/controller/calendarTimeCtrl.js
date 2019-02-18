@@ -32,20 +32,19 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     //Access permissions
     //获取权限
     $scope.jurisdiction = function () {
-        console.log("123" + $rootScope.adadad )
         var param = {userId: $scope.userId};
         $http.post("/camel/api/getGrade",param,{
         }).then(function (result) {  //
             $rootScope.rid = result.data.grade; // 权限ID  Authorization ID
             // $rootScope.bid = result.data.bid; // 分行ID  The branch ID
             if($rootScope.rid == 2){ // 领导   leadership
-                managerLoads($scope.branchId);
+                managerLoads($scope.branchId,$rootScope.rid);
                 $scope.uiConfig.calendar.eventStartEditable = false;
             }else if ($rootScope.rid == 3){ // 总行   The headquarters of
-                headOfficeView($scope.branchId);
+                headOfficeView($rootScope.rid);
                 $scope.uiConfig.calendar.eventStartEditable = false;
             }else{ //员工  employees
-                staffLoads(param);
+                staffLoads($scope.userId,$rootScope.rid);
                 $scope.uiConfig.calendar.eventStartEditable = true;
             }
 
@@ -56,8 +55,9 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     // jurisdiction();
     //Load the employee's own schedule
     //加载员工自己日程
-    function staffLoads(param) {
-        $http.post("/camel/api/getCalendarTimeList",param,{
+    function staffLoads(userId,rid) {
+        var param = {userId: userId,rid:rid};
+        $http.post("/camel/api/getCalenderTitle",param,{
         }).then(function (result) {
             angular.copy(result.data, $scope.events)
             for (var i =0;i<$scope.events.length;i++){
@@ -75,9 +75,9 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
     //Load all employee data
     //加载所有员工数据
-    function managerLoads(bid) {
-        var param = {bid: bid};
-        $http.post("/camel/api/getAllTimeSchedule",param,{
+    function managerLoads(bid,rid) {
+        var param = {bid: bid,rid:rid};
+        $http.post("/camel/api/getCalenderTitle",param,{
         }).then(function (result) {
             angular.copy(result.data, $scope.events)
             for (var i =0;i<$scope.events.length;i++){
@@ -93,8 +93,9 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         });
     };
 
-    function headOfficeView() {
-        $http.post("/camel/api/getHeadOfficeList",{
+    function headOfficeView(rid) {
+        var param = {rid:rid}
+        $http.post("/camel/api/getCalenderTitle",param,{
         }).then(function (result){
             angular.copy(result.data, $scope.events)
             console.log(result.data);
@@ -109,14 +110,14 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         $rootScope._date = date._i;
         console.log(date._i)
         if($rootScope.rid == 2){
-            everyDayCount($scope.userId,date._i,2);
-            manager.allEventOnes(date._i, $scope.branchId);
+            everyDayCount($scope.userId,date._i,$rootScope.rid);
+            manager.allEventOnes(date._i, $scope.branchId,$rootScope.rid);
             manager.getStaff($scope.branchId); // 查询员工   Query staff
         }else if ($rootScope.rid == 3){
-            branchTemplate.branchEventOne(date, allDay, jsEvent, view,$scope.branchId);
+            branchTemplate.branchEventOne(date._i,$scope.branchId,$rootScope.rid);
         }else{
-            everyDayCount($scope.userId,date._i,1)
-            modalsss.eventOnes(date._i,$scope.userId,$scope.branchId);
+            everyDayCount($scope.userId,date._i,$rootScope.rid)
+            modalsss.eventOnes(date._i,$scope.userId,$scope.branchId,$rootScope.rid);
         }
     };
     // 点击查找每日上报的任务量 人员ID  时间戳    人员类型
@@ -147,7 +148,8 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     // 删除日程
     $scope.deleteProj = function (indexs,id) {
         if($rootScope.rid == 2){
-            modalsss.deleteProjs(id,$rootScope._date,$scope.userId);
+            var userId = $rootScope.schedule[indexs].userId;
+            modalsss.deleteProjs(id,$rootScope._date,userId);
             $timeout(function() {
                 manager.allEventOnes($rootScope._date,$scope.branchId);
             }, 1000);
@@ -176,7 +178,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
     //Add the schedule
     // 添加日程
-    $scope.addSchedule = function () {
+    $scope.addSchedule = function (type) {
         if($rootScope.rid == 2){
             manager.mAddSchedule($rootScope._date,$scope.branchId);
         }else if ($rootScope.rid == 3){
