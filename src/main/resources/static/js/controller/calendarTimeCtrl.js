@@ -377,6 +377,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
 
     $scope.saveEditBranchInfo = function () {
         editBranchInfoTemplate.saveBranchInfo();
+        window.location.reload();
     };
 
     $scope.addBranchInfo = function () {
