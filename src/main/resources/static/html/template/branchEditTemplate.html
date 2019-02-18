@@ -42,7 +42,7 @@
                                    ng-model-options="{ updateOn: 'blur' }">
                         </td>
                         <td>
-                            <select ng-model="e.rowId" style="width:180px;height:35px;margin: -7px 0 1px 0;" ng-change="pitchOnButton(e.rowId)">
+                            <select ng-model="e.rowId" style="width:180px;height:35px;margin: -7px 0 1px 0;" ng-change="pitchOnButton(e.rowId,$index)">
                                 <option  value="" style="color: lightgrey"><h3>-Please select branch-</h3></option>
                                 <option ng-repeat="x in branchList" ng-value = "x.branchId" ng-if="x.scheduledNum > 0">{{x.branchName}}</option>
                             </select>
@@ -53,7 +53,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="closeTemplate()">close
+                <button type="button" class="btn btn-primary" ng-click="closeEditTemplate()">close
                 </button>
                 <button type="button" class="btn btn-primary" ng-click="saveTemplate()">save
                 </button>

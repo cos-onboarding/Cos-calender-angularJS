@@ -3,61 +3,76 @@
         <div>
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">
-                    Distribution Schedule
+                    Edit Branch Information
                 </h4>
-                <button type="button" class="close" ng-click="closeEditTemplate()" style="width: auto">
+                <button type="button" class="close" ng-click="closeTemplate()" style="width: auto">
                     &times;
                 </button><br>
             </div>
-            <div style="margin-left: 20px;" >
-            <p><h5>Assign tasks today</h5></p>
-            <ul ng-repeat="br in branchList">
-                <li>{{br.branchName}}: Remain {{br.scheduledNum}}</li>
-            </ul>
+            <div>
+                <button style="margin-left: 1130px;" class="btn btn-primary" ng-click="addBranchInfo()">Add branch</button>
             </div>
             <div class="modal-body">
                 <table style="width: 100%">
                     <tr>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td>customer name</td>
-                        <td>title</td>
-                        <td>body</td>
-                        <td>phone</td>
-                        <td>预约时间</td>
                         <td>branch name</td>
+                        <td>address</td>
+                        <td>level</td>
+                        <td>branch manager</td>
+                        <td>phone</td>
+                        <td>creat time</td>
                         <td>Action</td>
                     </tr>
-                    <tr ng-repeat="e in schedule">
+                    <tr ng-repeat="e in branchInfoList track by $index">
                         <td style="display: none">{{$index + 1}}</td>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                        <td><input type="text" style="width:180px;height:35px"  ng-model="e.customerName"/></td>
-                        <td><input type="text" style="width:180px;height:35px" ng-model="e.title"/></td>
-                        <td><input type="text" style="width:180px;height:35px"  ng-model="e.body"/></td>
-                        <td><input type="text" style="width:180px;height:35px;" ng-model="e.phone"/></td>
-                        <td>
-                            <input style="width:180px;height:35px;margin: -7px 0 1px 0;border: 1.5px solid #DBDBDB;border-radius: 6%;"
-                                   format="YYYY-MM-DD"
-                                   ng-model="e.startTime"
-                                   moment-picker="ctrl.datepicker"
-                                   ng-model-options="{ updateOn: 'blur' }">
-                        </td>
-                        <td>
-                            <select ng-model="e.rowId" style="width:180px;height:35px;margin: -7px 0 1px 0;" ng-change="pitchOnButton(e.rowId)">
-                                <option  value="" style="color: lightgrey"><h3>-Please select branch-</h3></option>
-                                <option ng-repeat="x in branchList" ng-value = "x.branchId" ng-if="x.scheduledNum > 0">{{x.branchName}}</option>
-                            </select>
-                        </td>
-                        <td><button type="button" style="height: 40px;margin: -7px 0 1px 0;" class="btn btn-primary" ng-click="submitUpdate($index)">submit</button></td>
-                        <td><input type="text" ng-model="e.itemId" style="display: none" /></td>
+                        <td><input type="text" style="width:180px;height:35px" ng-model="e.branchName" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'/></td>
+                        <td><input type="text" style="width:180px;height:35px"  ng-model="e.branchAddress" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'/></td>
+                        <td><input type="text" style="width:180px;height:35px;" ng-model="e.branchLevel" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'/></td>
+                        <td><input type="text" style="width:180px;height:35px;" ng-model="e.branchManager" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'/></td>
+                        <td><input type="text" style="width:180px;height:35px;" ng-model="e.phone" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'/></td>
+                        <td><input type="text" style="width:180px;height:35px;" ng-model="e.creatTime" ng-if="e != undefined" disabled = "disabled"/></td>
+                        <td><button type="button" style="height: 40px;margin: -7px 0 1px 0;" class="btn btn-primary" ng-if="e != undefined" ng-click="editRowBranchInfoButton($index)">edit</button></td>
+                        <td><button type="button" style="height: 40px;margin: -7px 0 1px 0;" class="btn btn-primary" ng-if="e != undefined" ng-click="saveEditRowBranchInfoButton($index)" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'>save</button></td>
+                        <td><button type="button" class="close" ng-click="deleteRowBranchInfoButton($index)" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'>&times;</button></td>
+                        <td><input type="text" style="display: none"  ng-model="e.branchId" /></td>
                     </tr>
                 </table>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" ng-click="closeTemplate()">close
                 </button>
-                <button type="button" class="btn btn-primary" ng-click="saveTemplate()">save
+                <button type="button" class="btn btn-primary" ng-click="saveEditBranchInfo()" ng-disabled="isAllDisabled">save
                 </button>
             </div>
         </div>
+    </div>
+    <div class="modal" style="height:80%;width:40%; margin:0 auto; botton: auto" id="myBranchModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div>
+                        branch name：<br><input type="text" style="width:200px;height:35px" ng-model="addInfo.branchName"/>
+                    </div>
+                    <div>
+                        location：<br><input type="text" style="width:200px;height:35px" ng-model="addInfo.branchLocation"/>
+                    </div>
+                    <div>
+                        branch manager：<br><input type="text" style="width:200px;height:35px" ng-model="addInfo.branchManager"/>
+                    </div>
+                    <div>
+                        phone：<br><input type="text" style="width:200px;height:35px" ng-model="addInfo.phone"/>
+                    </div>
+                    <div>
+                        address：<br><textarea rows="5" style="width:300px;" ng-model="addInfo.branchAddress"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" ng-click="closeBranchInfoWindow()">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" ng-click="saveAddBranchInfoButton()">保存
+                        </button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div>
 </div>

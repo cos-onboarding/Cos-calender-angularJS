@@ -12,22 +12,6 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
                 console.info(result);
             });
         },
-        //分配日程
-        branchEditAdd: function () {
-            //追加单独某天的日程
-            var ms = {
-                id: 0,
-                title: '',
-                message: '',
-                dateTime: '',
-                endTime: '',
-                infoId: $rootScope.timeStamp,
-                dateTime:"",
-                userId: "",
-                type: 1
-            }
-            $rootScope.schedule.push(ms);
-        },
         //Commit the save task and delete the current display
         branchEditDelRow: function (indexs) {
                 if(indexs>=0) {
@@ -91,16 +75,16 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
             $('#branchEditModalLabel').modal('show');
         },
 
-        editPitchOnButton: function (BranchId) {
+        editPitchOnButton: function (BranchId,index) {
             debugger;
             if(BranchId != ''){
-                if(indexReport != undefined){
-                    $rootScope.branchList[indexReport].reportNum++;
+                if(indexReport != index && indexReport != undefined){
+                    $rootScope.branchList[indexReport].scheduledNum++;
                 }
                 for(var i=0; i < $rootScope.branchList.length; i++){
                     if(BranchId == $rootScope.branchList[i].branchId) {
-                        if($rootScope.branchList[i].reportNum>0){
-                            $rootScope.branchList[i].reportNum--;
+                        if($rootScope.branchList[i].scheduledNum>0){
+                            $rootScope.branchList[i].scheduledNum--;
                             indexReport = i;
                             break;
                         }else{
