@@ -56,8 +56,8 @@
                                 </div>
                              </div>
                                 <div>
-                                    <button class="btn btn-primary" ng-click="addEditBranchInfo()" ng-if="rid==3">Management</button>
                                     <button class="btn btn-primary" ng-click="addBranchEditTemplate()" ng-if="rid==3">Distribute</button>
+                                    <button class="btn btn-primary" ng-click="addEditBranchInfoTemplate()" ng-if="rid==3">Management</button>
                                 </div>
 
                                 <div id="content" class="calendar" ng-model="eventSources" calendar="myCalendar1" ui-calendar="uiConfig.calendar"></div>
@@ -73,6 +73,8 @@
 <div ng-include="'html/template/managerTemplate.html'"></div>
 <div ng-include="'html/template/branchTemplate.html'"></div>
 <div ng-include="'html/template/branchEditTemplate.html'"></div>
+<div ng-include="'html/template/editBranchInfoTemplate.html'"></div>
+
 <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-17352735-3']);

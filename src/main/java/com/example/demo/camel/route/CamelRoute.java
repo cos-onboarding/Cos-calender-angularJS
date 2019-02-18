@@ -76,6 +76,15 @@ public class CamelRoute extends RouteBuilder {
 	@Value("${seePersonalNumber.url}")
 	private String seePersonalNumberUrl;
 
+	@Value("${calendar.edit.branch.url}")
+	private String editBranchInfoUrl;
+
+	@Value("${calendar.get.branch.url}")
+	private String getBranchInfoUrl;
+
+	@Value("${calendar.del.branch.url}")
+	private String delBranchInfoUrl;
+
 
 	@Override
 	public void configure() throws Exception {
@@ -207,6 +216,27 @@ public class CamelRoute extends RouteBuilder {
 				.post("/getDistributeTaskList")
 				.to("direct:getDistributeTaskListService");
 		from("direct:getDistributeTaskListService").process(new CalendarProcessor()).to(getDistributeTaskListUrl);
+
+		rest("/api/")
+				.id("daySchedule-route")
+				.consumes("application/json")
+				.post("/getBranchInfo")
+				.to("direct:getBranchInfoService");
+		from("direct:getBranchInfoService").process(new CalendarProcessor()).to(getBranchInfoUrl);
+
+		rest("/api/")
+				.id("daySchedule-route")
+				.consumes("application/json")
+				.post("/delBranchInfo")
+				.to("direct:delBranchInfoService");
+		from("direct:delBranchInfoService").process(new CalendarProcessor()).to(delBranchInfoUrl);
+
+		rest("/api/")
+				.id("daySchedule-route")
+				.consumes("application/json")
+				.post("/editBranchInfo")
+				.to("direct:editBranchInfoService");
+		from("direct:editBranchInfoService").process(new CalendarProcessor()).to(editBranchInfoUrl);
 		
 		rest("/api/")
 		  .id("usrcheck-route")

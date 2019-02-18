@@ -1,86 +1,90 @@
 app.service('editBranchInfoTemplate',function ($rootScope,$http) {
-    $rootScope.branchList = [];
-    $rootScope.branchStaffList = [];
-    $rootScope.isShow = false;
-
+    $rootScope.branchInfoList = [];
+    $rootScope.updateInfoList = [];
+    $rootScope.delInfoList = [];
+    $rootScope.addInfoList = [];
+    $rootScope.addInfo = []
     return {
-        //获取分行及经理名称
-        getBranch: function () {
-            $http.post("/camel/api/getAllBranch", {}).then(function (result) {  //正确请求成功时处理
-                $rootScope.branchList = result.data;
+        editBranchInfoModalLabel: function(){
+            $('#editBranchInfoModalLabel').modal('show');
+        },
+
+        closeEditBranchInfoTemplate: function () {
+            $('#editBranchInfoModalLabel').modal('hide');
+        },
+
+        editRowBranchInfo: function (index) {
+            if($rootScope["isDisabled" + $rootScope.branchInfoList[index].branchId]){
+                $rootScope["isDisabled" + $rootScope.branchInfoList[index].branchId] = false;
+            }else{
+                $rootScope["isDisabled" + $rootScope.branchInfoList[index].branchId] = true;
+            }
+                console.log($rootScope["isDisabled" + $rootScope.branchInfoList[index].branchId]);
+        },
+        saveEditRowBranchInfo: function (index) {
+            if(index >= 0){
+                if($rootScope.updateInfoList!=''){
+                    for(var i=0; i < $rootScope.updateInfoList.length; i++){
+                        if($rootScope.updateInfoList[i].branchId == $rootScope.branchInfoList[index].branchId){
+                            $rootScope.updateInfoList.splice(i,1);
+                        }
+                    }
+                }
+                    $rootScope.updateInfoList.push($rootScope.branchInfoList[index]);
+                    $rootScope["isDisabled" + $rootScope.branchInfoList[index].branchId] = true;
+                    $rootScope.isAllDisabled = false;
+            }
+        },
+        //2019.02.17 Zach
+        //Get all branch information
+        getBranchInfoList: function () {
+            $rootScope.isAllDisabled = true;
+            $http.post("/camel/api/getBranchInfo", {}).then(function (result) {  //正确请求成功时处理
+                $rootScope.branchInfoList = result.data;
+                for(var i = 0; i < $rootScope.branchInfoList.length; i++){
+                    $rootScope.branchInfoList[i].creatTime = $rootScope.branchInfoList[i].creatTime.replace("T", " ");
+                     $rootScope["isDisabled"+$rootScope.branchInfoList[i].branchId] = true;
+                    console.log($rootScope["isDisabled"+$rootScope.branchInfoList[i].branchId]);
+                }
+
                 console.log("员工集合:" + JSON.stringify(result));
             }).catch(function (result) { //捕捉错误处理
                 console.info(result);
             });
         },
-        // 点击日期  获取日程信息
-        branchEventOne: function (date, allDay, jsEvent, view) {
-            if($rootScope.isShow==true){
-                $rootScope.isShow = !$rootScope.isShow;
-            }
-            var param = {time: date._i};
-            $http.post("/camel/api/getAllBranchSchedule", param, {}).then(function (result) {  //正确请求成功时处理
-                if (result.data.length != 0) {
-                    $rootScope.schedule = result.data;
-                    console.log(JSON.stringify($rootScope.schedule));
-                }
-            }).catch(function (result) { //捕捉错误处理
-            });
-            $('#branchModalLabel').modal('show');
-        },
-        //分配日程
-        branchAdd: function () {
-            //追加单独某天的日程
-            var ms = {
-                id: 0,
-                title: '',
-                message: '',
-                dateTime: '',
-                endTime: '',
-                infoId: $rootScope.timeStamp,
-                rowId: "",
-                type: 1
-            }
-            $rootScope.schedule.push(ms);
-        },
 
-        //关闭Template
-        closeBranchTemplate: function () {
-            $('#branchModalLabel').modal('hide');
-            $rootScope.schedule = [];
-        },
-        saveBranchTaskInfo: function () {
-            for (var i = 0; i < $rootScope.schedule.length; i++) {
-                var startTime = new Date($rootScope.schedule[i].dateTime).toISOString().slice(0,10);
-                var endTime = new Date($rootScope.schedule[i].endTime).toISOString().slice(0,10);
-                var times = Date.parse(new Date());
-                $rootScope.schedule[i].startTime = startTime;
-                $rootScope.schedule[i].endTime = endTime;
-                $rootScope.schedule[i].infoId = times;
-                console.log(times);
-            }
-            var newSchedule = $rootScope.schedule;
+        //保存
+        saveBranchInfo: function () {
+            debugger;
             var param = {
-                newSchedule: newSchedule
+                branchAddInfo: $rootScope.addInfoList,
+                branchUpdateInfo: $rootScope.updateInfoList,
+                branchDelInfo: $rootScope.delInfoList
             }
             console.log(JSON.stringify(param))
-            $http.post("/camel/api/saveBranchCalendar", param, {}).then(function (result) {  //正确请求成功时处理
-            }).catch(function (result) { //捕捉错误处理
-                console.info(result);
-            });
-            $rootScope.scheduleDel = [];
-            $('#managerModal').modal('hide');
-            $rootScope.isShow = !$rootScope.isShow;
+            if(JSON.stringify($rootScope.addInfoList) != '[]' || JSON.stringify($rootScope.updateInfoList) != '[]'){
+                $http.post("/camel/api/editBranchInfo", param, {}).then(function (result) {  //正确请求成功时处理
+                    $rootScope.addInfoList = [];
+                }).catch(function (result) { //捕捉错误处理
+                    console.info(result);
+                });
+            }else if(JSON.stringify($rootScope.delInfoList) != '[]'){
+                $http.post("/camel/api/delBranchInfo", param, {}).then(function (result) {  //正确请求成功时处理
+                    $rootScope.delInfoList = [];
+                }).catch(function (result) { //捕捉错误处理
+                    console.info(result);
+                });
+            }
+            $('#editBranchInfoModalLabel').modal('hide');
         },
-        deleteTemplateRowInfo: function (indexs) {
-            console.log()
-            if ($rootScope.branchStaffList[indexs].id != 0) {
-                $rootScope.scheduleDel.push($rootScope.branchStaffList[indexs]);
+        deleteRowBranchInfo: function (index) {
+            alert("Are you sure you want to delete the " + $rootScope.branchInfoList[index].branchName + " information?");
+            if ($rootScope.branchInfoList[index].id != 0) {
+                $rootScope.delInfoList.push($rootScope.branchInfoList[index]);
             }
-            $rootScope.branchStaffList.splice(indexs, 1);
-            if($rootScope.branchStaffList.length==0){
-                $rootScope.isShow = !$rootScope.isShow;
-            }
+            // $rootScope.branchInfoList.splice(index,1);
+            delete $rootScope.branchInfoList[index]
+            $rootScope.isAllDisabled = false;
         },
         //Get all the tasks for the branch today
         getBranchScheduleInfo: function (indexs, date) {
@@ -96,6 +100,23 @@ app.service('editBranchInfoTemplate',function ($rootScope,$http) {
             }).catch(function (result) { //捕捉错误处理
                 console.info(result);
             });
-        }
+        },
+        openMyBranchModel: function () {
+            $('#myBranchModel').modal('show');
+        },
+        //关闭Template
+        closeEditBranchInfoModalLabel: function () {
+            $('#myBranchModel').modal('hide');
+        },
+
+        saveAddBranchInfo: function () {
+            $rootScope.addInfo.creatTime = '';
+            $rootScope.addInfo.branchLevel = 0;
+            $rootScope.branchInfoList.unshift($rootScope.addInfo);
+            $rootScope.addInfo = [];
+            $rootScope.addInfoList.push($rootScope.addInfo);
+            $('#myBranchModel').modal('hide');
+            $rootScope.isAllDisabled = false;
+        },
     }
 });

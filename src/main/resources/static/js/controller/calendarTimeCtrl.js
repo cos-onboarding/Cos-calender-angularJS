@@ -1,4 +1,4 @@
-app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate,chServer,branchEditTemplate) {
+app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$modal,$timeout,$stateParams,modalsss,manager,branchTemplate,chServer,branchEditTemplate,editBranchInfoTemplate) {
     $rootScope.isLandingPage = false;
     $rootScope.isJudge = false;
     $rootScope.dayCount = {};
@@ -263,7 +263,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             manager.mCloseSchedul();
             window.location.reload();
         }else if ($rootScope.rid == 3){
-            branchEditTemplate.closeBranchEditTemplate();
+            editBranchInfoTemplate.closeEditBranchInfoTemplate();
         }else{
             modalsss.deleteMs();
             window.location.reload();
@@ -343,8 +343,8 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         $compile(element)($scope);
     };
 
-    $scope.pitchOnButton = function(rowId){
-        branchEditTemplate.editPitchOnButton(rowId);
+    $scope.pitchOnButton = function(rowId,index){
+        branchEditTemplate.editPitchOnButton(rowId,index);
     };
 
     $scope.addBranchEditTemplate = function () {
@@ -360,13 +360,39 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         branchEditTemplate.branchEditDelRow(indexs);
     };
 
-    $scope.addBranchSchedule = function () {
+    /*$scope.addBranchSchedule = function () {
         branchEditTemplate.branchEditAdd();
+    };*/
+
+    $scope.addEditBranchInfoTemplate = function () {
+        editBranchInfoTemplate.editBranchInfoModalLabel();
+        editBranchInfoTemplate.getBranchInfoList();
     };
 
-    $scope.addEditBranchInfo = function () {
-        editBranchInfoTemplate.editBranchInfoModalLabel();
+    $scope.editRowBranchInfoButton = function (index) {
+            editBranchInfoTemplate.editRowBranchInfo(index);
     };
+
+    $scope.saveEditRowBranchInfoButton = function (index) {
+        editBranchInfoTemplate.saveEditRowBranchInfo(index);
+    };
+
+    $scope.saveEditBranchInfo = function () {
+        editBranchInfoTemplate.saveBranchInfo();
+    };
+
+    $scope.addBranchInfo = function () {
+        editBranchInfoTemplate.openMyBranchModel();
+    },
+    $scope.closeBranchInfoWindow = function () {
+        editBranchInfoTemplate.closeEditBranchInfoModalLabel();
+    };
+    $scope.saveAddBranchInfoButton = function () {
+        editBranchInfoTemplate.saveAddBranchInfo();
+    };
+    $scope.deleteRowBranchInfoButton = function (index) {
+        editBranchInfoTemplate.deleteRowBranchInfo(index);
+    }
 
     /* config object */
     $scope.uiConfig = {
