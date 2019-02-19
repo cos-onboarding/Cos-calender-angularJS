@@ -11,6 +11,8 @@
             </div>
             <div style="margin-left: 20px;" >
             <p><h5>Assign tasks today</h5></p>
+                <input  style="height: 25px;width: 100px;" type="text" ng-model="dayNum" placeholder="Enter information about search">
+                <button type="button" style="height: 30px;margin-top:-10px;width:70px;" class="btn btn-primary" ng-click="addBranchEditTemplateCopy(dayNum)">search</button>
             <ul ng-repeat="br in branchList">
                 <li>{{br.branchName}}: Remain {{br.scheduledNum}}</li>
             </ul>

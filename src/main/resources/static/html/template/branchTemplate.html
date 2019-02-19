@@ -16,8 +16,8 @@
                         <td>No.</td>
                         <td>branch name</td>
                         <td>level</td>
-                        <td>In progress</td>
                         <td>complete</td>
+                        <td>In progress</td>
                         <td>fail</td>
                         <td>total</td>
                         <td>action</td>
@@ -36,26 +36,28 @@
                     <table style="width: 80%" ng-show="isShow">
                         <tr>
                             <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            <td style="display: none"></td>
                             <td>staff name</td>
                             <td>title</td>
                             <td>body</td>
                             <td>phone</td>
-                            <td>预约时间</td>
-                            <td>结束时间</td>
-                            <td>状态</td>
+                            <td>appointment time</td>
+                            <td>end time</td>
+                            <td>type</td>
                         </tr>
                     <tr ng-repeat="x in branchStaffList" >
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                    <td><input type="text" ng-model="x.userName" style="width:200px;height:35px" disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.title" style="width:200px;height:35px" disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.body" style="width:200px;height:35px" disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.phone" style="width:200px;height:35px" disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.startTime" style="width:200px;height:35px"  disabled="disabled"/></td>
-                    <td><input type="text" ng-model="x.endTime" style="width:200px;height:35px" disabled="disabled"/></td>
+                        <td style="display: none">{{$index + 1}}</td>
+                    <td><input type="text" ng-model="x.userName" ng-style='$parent["colorValue"+{{$index}}]' style="width:200px;height:35px" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.title" ng-style='$parent["colorValue"+{{$index}}]' style="width:200px;height:35px" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.body" ng-style='$parent["colorValue"+{{$index}}]' style="width:200px;height:35px" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.phone" ng-style='$parent["colorValue"+{{$index}}]' style="width:200px;height:35px" disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.startTime" ng-style='$parent["colorValue"+{{$index}}]' style="width:200px;height:35px"  disabled="disabled"/></td>
+                    <td><input type="text" ng-model="x.endTime" ng-style='$parent["colorValue"+{{$index}}]' style="width:200px;height:35px" disabled="disabled"/></td>
                     <td>
-                        <input type="text" ng-if="x.TYPE==0" style="width:200px;height:35px" value="complete" disabled="disabled"/>
-                        <input type="text" ng-if="x.TYPE==1" style="width:200px;height:35px" value="fail" disabled="disabled"/>
-                        <input type="text" ng-if="x.TYPE==2" style="width:200px;height:35px" value="uncomplete" disabled="disabled"/>
+                        <input type="text" ng-if="x.TYPE==0" ng-style='$parent["colorValue"+{{$index}}]' style="width:200px;height:35px" value="complete" disabled="disabled"/>
+                        <input type="text" ng-if="x.TYPE==1" ng-style='$parent["colorValue"+{{$index}}]' style="width:200px;height:35px" value="In progress" disabled="disabled"/>
+                        <input type="text" ng-if="x.TYPE==2" ng-style='$parent["colorValue"+{{$index}}]' style="width:200px;height:35px" value="fail" disabled="disabled"/>
                     </td>
                 </tr>
                 </table>

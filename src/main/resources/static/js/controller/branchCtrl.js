@@ -28,7 +28,7 @@ app.service('branchTemplate',function ($rootScope,$http) {
             });
             $('#branchModalLabel').modal('show');
         },
-        //分配日程
+      /*  //分配日程
         branchAdd: function () {
             //追加单独某天的日程
             var ms = {
@@ -43,7 +43,7 @@ app.service('branchTemplate',function ($rootScope,$http) {
             }
             $rootScope.schedule.push(ms);
         },
-
+*/
         //关闭Template
         closeBranchTemplate: function () {
             $('#branchModalLabel').modal('hide');
@@ -88,9 +88,16 @@ app.service('branchTemplate',function ($rootScope,$http) {
             $http.post("/camel/api/dayBranchStaffInfo", params, {}).then(function (result){
                 $rootScope.branchStaffList = result.data;
                 for(var i = 0; i < $rootScope.branchStaffList.length; i++){
-                    $rootScope.branchStaffList[i].endTime = $rootScope.branchStaffList[i].endTime.replace("T", " ");
+                    $rootScope.branchStaffList[i].endTime =
+                        $rootScope.branchStaffList[i].endTime != null ? $rootScope.branchStaffList[i].endTime.replace("T", " ") : "";
                     $rootScope.branchStaffList[i].startTime = $rootScope.branchStaffList[i].startTime.replace("T", " ");
-                }
+                    if($rootScope.branchStaffList[i].userName == "Branch untreated") {
+                        $rootScope["colorValue" + i] = {
+                            "color": "red",
+                            "borderColor":"red"
+                        }
+                    }
+                    }
                 console.log(JSON.stringify($rootScope.branchStaffList));
                 $rootScope.isShow = !$rootScope.isShow;
             }).catch(function (result) { //捕捉错误处理

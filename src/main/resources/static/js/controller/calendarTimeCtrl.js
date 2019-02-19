@@ -351,6 +351,10 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
         branchEditTemplate.getBranch();
     };
 
+    $scope.addBranchEditTemplateCopy = function (dayNum) {
+        branchEditTemplate.getBranch(dayNum);
+    }
+
     $scope.closeEditTemplate = function() {
         branchEditTemplate.closeBranchEditTemplate();
     };
