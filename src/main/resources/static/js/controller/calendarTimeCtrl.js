@@ -151,14 +151,14 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
             var userId = $rootScope.schedule[indexs].userId;
             modalsss.deleteProjs(id,$rootScope._date,userId);
             $timeout(function() {
-                manager.allEventOnes($rootScope._date,$scope.branchId);
+                manager.allEventOnes($rootScope._date,$scope.branchId,$rootScope.rid);
             }, 1000);
         }else if ($rootScope.rid == 3){
             branchTemplate.deleteTemplateRowInfo(indexs);
         }else{
             modalsss.deleteProjs(id,$rootScope._date,$scope.userId);
             $timeout(function() {
-                modalsss.eventOnes($rootScope._date,$scope.userId,$scope.branchId);
+                modalsss.eventOnes($rootScope._date,$scope.userId,$scope.branchId,$rootScope.rid);
             }, 1000);
         }
     }
