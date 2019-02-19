@@ -48,7 +48,7 @@ app.service('manager',function ($rootScope,$http,chServer) {
                 userId:0,
                 id:0
             }
-            $('#managerModal').modal('show');
+            $('#managerListModal').modal('show');
         },
 
         //查看日程
