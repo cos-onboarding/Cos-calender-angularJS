@@ -10,7 +10,8 @@
                 </button><br>
             </div>
             <div>
-                <button style="margin-left: 1130px;" class="btn btn-primary" ng-click="addBranchInfo()">Add branch</button>
+                <button style="margin-left: 20px;" class="btn btn-primary" ng-click="addBranchInfo()">Add branch</button>
+                <input   style="margin-left: 900px;height: 30px;margin-top: 10px;" type="text" ng-model="searchData" placeholder="Enter information about search">
             </div>
             <div class="modal-body">
                 <table style="width: 100%">
@@ -23,7 +24,7 @@
                         <td>creat time</td>
                         <td>Action</td>
                     </tr>
-                    <tr ng-repeat="e in branchInfoList track by $index">
+                    <tr ng-repeat="e in branchInfoList | filter : searchData">
                         <td style="display: none">{{$index + 1}}</td>
                         <td><input type="text" style="width:180px;height:35px" ng-model="e.branchName" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'/></td>
                         <td><input type="text" style="width:180px;height:35px"  ng-model="e.branchAddress" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'/></td>

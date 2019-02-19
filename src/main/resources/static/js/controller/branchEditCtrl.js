@@ -20,7 +20,6 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
                     $rootScope.newSchedule.push($rootScope.schedule[indexs]);
                     $rootScope.schedule.splice(indexs, 1);
                 }
-
         },
 
         //关闭Template
