@@ -362,11 +362,7 @@ app.controller("calendarTimeCtrl",function ($scope,$rootScope,$http,$compile,$mo
     $scope.submitUpdate = function(indexs){
         branchEditTemplate.branchEditDelRow(indexs);
     };
-
-    /*$scope.addBranchSchedule = function () {
-        branchEditTemplate.branchEditAdd();
-    };*/
-
+    
     $scope.addEditBranchInfoTemplate = function () {
         editBranchInfoTemplate.getBranchInfoList();
     };

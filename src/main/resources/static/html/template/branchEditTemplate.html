@@ -9,10 +9,9 @@
                     &times;
                 </button><br>
             </div>
-            <div style="margin-left: 20px;" >
+            <div style="margin-left: 35px;" >
             <p><h5>Assign tasks today</h5></p>
-                <input  style="height: 25px;width: 100px;" type="text" ng-model="dayNum" placeholder="Enter information about search">
-                <button type="button" style="height: 30px;margin-top:-10px;width:70px;" class="btn btn-primary" ng-click="addBranchEditTemplateCopy(dayNum)">search</button>
+                <input  style="height: 25px;width: 120px;" type="text" ng-model="dayNum" placeholder="Enter (/days)" ng-change="addBranchEditTemplateCopy(dayNum)"><td><h5 style="display:inline;">&nbsp;&nbsp;&nbsp;&nbsp;{{nowDay | date:'yyyy-MM-dd'}}</h5>  to  <h5  style="display:inline;">{{toDay | date:'yyyy-MM-dd'}}</h5></td>
             <ul ng-repeat="br in branchList">
                 <li>{{br.branchName}}: Remain {{br.scheduledNum}}</li>
             </ul>
@@ -44,7 +43,8 @@
                                    ng-model-options="{ updateOn: 'blur' }">
                         </td>
                         <td>
-                            <select ng-model="e.rowId" style="width:180px;height:35px;margin: -7px 0 1px 0;" ng-change="pitchOnButton(e.rowId,$index)">
+                            <!--ng-change="pitchOnButton(e.rowId,$index)"-->
+                            <select ng-model="e.rowId" style="width:180px;height:35px;margin: -7px 0 1px 0;" >
                                 <option  value="" style="color: lightgrey"><h3>-Please select branch-</h3></option>
                                 <option ng-repeat="x in branchList" ng-value = "x.branchId" ng-if="x.scheduledNum > 0">{{x.branchName}}</option>
                             </select>

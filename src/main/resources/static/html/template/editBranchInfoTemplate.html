@@ -32,9 +32,19 @@
                         <td><input type="text" style="width:180px;height:35px;" ng-model="e.branchManager" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'/></td>
                         <td><input type="text" style="width:180px;height:35px;" ng-model="e.phone" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'/></td>
                         <td><input type="text" style="width:180px;height:35px;" ng-model="e.creatTime" ng-if="e != undefined" disabled = "disabled"/></td>
-                        <td><button type="button" style="height: 40px;margin: -7px 0 1px 0;" class="btn btn-primary" ng-if="e != undefined" ng-click="editRowBranchInfoButton($index)">edit</button></td>
-                        <td><button type="button" style="height: 40px;margin: -7px 0 1px 0;" class="btn btn-primary" ng-if="e != undefined" ng-click="saveEditRowBranchInfoButton($index)" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'>save</button></td>
-                        <td><button type="button" class="close" ng-click="deleteRowBranchInfoButton($index)" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'>&times;</button></td>
+                        <td class="btn-group" ng-if="e != undefined">
+                            <a class="btn btn-primary" href="#">Action</a>
+                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"></a>
+                            <ul class="dropdown-menu" style="color: #68C2D0">
+                                <li><button class="btn btn-primary" style="width: -webkit-fill-available;" ng-click="editRowBranchInfoButton($index)" href="#">Edit</button></button></li>
+                                <li><button class="btn btn-primary" style="width: -webkit-fill-available;" ng-click="saveEditRowBranchInfoButton($index)" ng-disabled='$parent["isDisabled"+{{e.branchId}}]' href="#">Save</button></li>
+                                <li><button class="btn btn-primary" style="width: -webkit-fill-available;" ng-click="deleteRowBranchInfoButton($index)"  ng-disabled='$parent["isDisabled"+{{e.branchId}}]' href="#">Delete</button></li>
+                            </ul>
+                        </td>
+
+                        <!--<td><button type="button" style="height: 40px;margin: -7px 0 1px 0;" class="btn btn-primary" ng-if="e != undefined" ng-click="editRowBranchInfoButton($index)">edit</button></td>
+                    <td><button type="button" style="height: 40px;margin: -7px 0 1px 0;" class="btn btn-primary" ng-if="e != undefined" ng-click="saveEditRowBranchInfoButton($index)" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'>save</button></td>
+                    <td><button type="button" class="close" ng-click="deleteRowBranchInfoButton($index)" ng-if="e != undefined" ng-disabled='$parent["isDisabled"+{{e.branchId}}]'>&times;</button></td>-->
                         <td><input type="text" style="display: none"  ng-model="e.branchId" /></td>
                     </tr>
                 </table>

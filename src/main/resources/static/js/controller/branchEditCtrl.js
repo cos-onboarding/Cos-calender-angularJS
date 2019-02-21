@@ -4,11 +4,17 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
     $rootScope.newSchedule = [];
     return {
         getBranch: function (dayNum) {
-
             var num = dayNum != undefined && dayNum > 0 ? dayNum : 1;
             var params = {
                 dayNum: num
             }
+
+            var dayTime = new Date(new Date().getTime()).toLocaleDateString();
+            var isdate = new Date(dayTime.replace(/-/g,"/"));
+            var newdate = new Date((isdate/1000+(86400*num))*1000);
+            $rootScope.toDay = newdate.getFullYear()+"-"+(newdate.getMonth()+1)+"-"+(newdate.getDate());
+            $rootScope.nowDay = isdate;
+
             $http.post("/camel/api/getAllBranch", params, {}).then(function (result) {  //正确请求成功时处理
                 $rootScope.branchList = result.data;
                 console.log("AllBranch:" + JSON.stringify($rootScope.branchList));
@@ -46,8 +52,8 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
             }).catch(function (result) { //捕捉错误处理
                 console.info(result);
             });
-
         },
+
         deleteTemplateRowInfo: function (indexs) {
             console.log()
             if($rootScope.schedule[indexs] != '') {
@@ -88,6 +94,5 @@ app.service('branchEditTemplate',function ($rootScope,$http) {
                 }
             }
         },
-
     }
 });
